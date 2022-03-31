@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+demo
+test
+
+# macOS
+**/.DS_Store
+
+# vscode config files
+**/.vscode
