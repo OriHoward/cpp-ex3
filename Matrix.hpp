@@ -8,7 +8,7 @@
 namespace zich {
     class Matrix {
     private:
-//        std::vector<double> test;
+
     public:
         //Unary minus
         Matrix operator-() const;
@@ -28,11 +28,17 @@ namespace zich {
 
         Matrix &operator-=(const Matrix &other);
 
-        Matrix operator*(const Matrix &other);
+//        Matrix operator*(const Matrix &other);
+//
+//        Matrix operator*(int, const Matrix &m);
+//
+//        Matrix operator*(int scalar);
+//
+//        Matrix operator*(const Matrix &m, int scalar);
 
         Matrix &operator*=(const Matrix &other);
 
-        Matrix &operator*=(int scalar);
+        Matrix &operator*=(double scalar);
 
         //prefix increment takes no arguments:
         Matrix &operator++();
@@ -56,14 +62,14 @@ namespace zich {
 
         friend bool operator<=(const Matrix &m1, const Matrix &m2);
 
-        // not sure about this one
-        friend Matrix operator*(int scalar, Matrix &m);
-
         friend std::ostream &operator<<(std::ostream &output, const Matrix &m);
 
         friend std::istream &operator>>(std::istream &input, Matrix &m);
 
+        friend bool operator*(int, const Matrix &m);
 
     };
+
+
 }
 #endif
