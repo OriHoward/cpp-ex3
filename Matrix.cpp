@@ -5,13 +5,30 @@
 
 namespace zich {
 
+
     Matrix::Matrix(std::vector<double> &vec, int row, int col) {
-//        if (row * col != vec.size()) {
-//            throw std::invalid_argument("row*col NOT equal to size of vector");
-//        }
+        checkInput(vec, row, col);
+        this->vec = vec;
+        this->row = row;
+        this->col = col;
     }
 
     Matrix::~Matrix() {}
+
+    void Matrix::checkInput(std::vector<double> &vec, int row, int col) {
+        if (row * col != vec.size() || row < 1 || col < 1) {
+            throw std::invalid_argument("row and col must be positive and row*col must be equal to size of vector");
+        }
+    }
+
+    void Matrix::checkMatSize(int matSize, int row, int col) {
+    }
+
+    void Matrix::checkSameDimension(const Matrix &other) const {
+        if (this->row == other.row && this->col == other.col) {
+            throw std::invalid_argument("both matrices must be in the same dimension");
+        }
+    }
 
 
     Matrix Matrix::operator-() const { return *this; }
@@ -19,13 +36,25 @@ namespace zich {
     Matrix Matrix::operator+() const { return *this; }
 
 
-    Matrix Matrix::operator+(const Matrix &other) { return *this; }
+    Matrix Matrix::operator+(const Matrix &other) {
+        checkSameDimension(other);
+        return *this;
+    }
 
-    Matrix &Matrix::operator+=(const Matrix &other) { return *this; }
+    Matrix &Matrix::operator+=(const Matrix &other) {
+        checkSameDimension(other);
+        return *this;
+    }
 
-    Matrix Matrix::operator-(const Matrix &other) { return *this; }
+    Matrix Matrix::operator-(const Matrix &other) {
+        checkSameDimension(other);
+        return *this;
+    }
 
-    Matrix &Matrix::operator-=(const Matrix &other) { return *this; }
+    Matrix &Matrix::operator-=(const Matrix &other) {
+        checkSameDimension(other);
+        return *this;
+    }
 
     Matrix Matrix::operator*(const Matrix &other) { return *this; }
 

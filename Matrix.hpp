@@ -8,15 +8,24 @@
 namespace zich {
     class Matrix {
     private:
+        int row, col;
+        std::vector<double> vec;
 
     public:
+
+        static void checkInput(std::vector<double> &vec, int row, int col);
+
+        static void checkMatSize(int matSize, int row, int col);
+
+        void checkSameDimension(const Matrix &other) const;
+
         //Unary minus
         Matrix operator-() const;
 
         Matrix operator+() const;
 
 
-        Matrix(std::vector<double> &, int, int);
+        Matrix(std::vector<double> &vec, int row, int col);
 
         ~Matrix();
 
