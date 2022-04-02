@@ -27,6 +27,7 @@ namespace zich {
 
     Matrix &Matrix::operator-=(const Matrix &other) { return *this; }
 
+    Matrix Matrix::operator*(const Matrix &other) { return *this; }
 
     Matrix &Matrix::operator*=(const Matrix &other) { return *this; }
 

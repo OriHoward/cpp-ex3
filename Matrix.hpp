@@ -16,7 +16,7 @@ namespace zich {
         Matrix operator+() const;
 
 
-        Matrix(std::vector<double>&, int, int);
+        Matrix(std::vector<double> &, int, int);
 
         ~Matrix();
 
@@ -28,13 +28,7 @@ namespace zich {
 
         Matrix &operator-=(const Matrix &other);
 
-//        Matrix operator*(const Matrix &other);
-//
-//        Matrix operator*(int, const Matrix &m);
-//
-//        Matrix operator*(int scalar);
-//
-//        Matrix operator*(const Matrix &m, int scalar);
+        Matrix operator*(const Matrix &other);
 
         Matrix &operator*=(const Matrix &other);
 
@@ -69,7 +63,6 @@ namespace zich {
         friend bool operator*(int, const Matrix &m);
 
     };
-
 
 }
 #endif

@@ -17,12 +17,6 @@ void generateRandomVector(std::vector<double> &randomVec) {
 }
 
 
-TEST_CASE ("..") {
-    srand(time(NULL));
-    std::vector<double> vec(std::rand() % 100);
-    generateRandomVector(vec);
-}
-
 TEST_CASE ("bad input - row*col NOT equal to size of vector") {
     std::vector<double> vec(30);
     generateRandomVector(vec);
@@ -45,8 +39,11 @@ TEST_CASE ("bad input - can't added or subtract two matrices with different dime
         Matrix firstMat(vec, i, 50 - i);
         Matrix secondMat(vec, 50 - i, i);
                 CHECK_THROWS(firstMat + secondMat);
+                CHECK_THROWS(firstMat += secondMat);
                 CHECK_THROWS(firstMat - secondMat);
+                CHECK_THROWS(firstMat -= secondMat);
                 CHECK_THROWS(secondMat - firstMat);
+                CHECK_THROWS(secondMat -= firstMat);
     }
 
 }
@@ -65,9 +62,30 @@ TEST_CASE ("bad input - can't compare two matrices with different dimensions") {
                 CHECK_THROWS(if (firstMat <= secondMat));
                 CHECK_THROWS(if (firstMat >= secondMat));
     }
-
 }
 
-TEST_CASE ("") {
+TEST_CASE ("bad input - Undefined multiplication between 2 matrices") {
+    srand(time(NULL));
+    std::vector<double> vec(100);
+    generateRandomVector(vec);
+    for (int i = 0, j = 50; i < 50; ++i, j++) {
+        Matrix firstMat(vec, i, 100 - i);
+        Matrix secondMat(vec, j, 100 - j);
+                CHECK_THROWS(firstMat * secondMat);
+                CHECK_THROWS(firstMat *= secondMat);
+                CHECK_THROWS(secondMat * firstMat);
+                CHECK_THROWS(secondMat *= firstMat);
+    }
+}
 
+TEST_CASE ("good input - well defined multiplication between 2 matrices") {
+    srand(time(NULL));
+    std::vector<double> vec(100);
+    generateRandomVector(vec);
+    for (int i = 0; i < 50; ++i) {
+        Matrix firstMat(vec, i, 100 - i);
+        Matrix secondMat(vec, 100 - i, i);
+                CHECK_NOTHROW(firstMat * secondMat);
+                CHECK_NOTHROW(secondMat * firstMat);
+    }
 }
