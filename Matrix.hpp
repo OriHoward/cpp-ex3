@@ -16,7 +16,7 @@ namespace zich {
         Matrix operator+() const;
 
 
-        Matrix(std::vector<double>, int, int);
+        Matrix(std::vector<double>&, int, int);
 
         ~Matrix();
 

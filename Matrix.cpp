@@ -5,7 +5,11 @@
 
 namespace zich {
 
-    Matrix::Matrix(std::vector<double>, int, int) {}
+    Matrix::Matrix(std::vector<double> &vec, int row, int col) {
+//        if (row * col != vec.size()) {
+//            throw std::invalid_argument("row*col NOT equal to size of vector");
+//        }
+    }
 
     Matrix::~Matrix() {}
 
@@ -50,6 +54,7 @@ namespace zich {
 
     bool operator<=(const Matrix &m1, const Matrix &m2) { return false; }
 
+    // not sure :
     bool operator*(int scalar, const Matrix &m) { return true; }
 
 
