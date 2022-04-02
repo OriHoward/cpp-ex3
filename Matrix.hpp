@@ -19,6 +19,8 @@ namespace zich {
 
         void checkSameDimension(const Matrix &other) const;
 
+        static void checkSameDimension(const Matrix &m1, const Matrix &m2);
+
         //Unary minus
         Matrix operator-() const;
 
