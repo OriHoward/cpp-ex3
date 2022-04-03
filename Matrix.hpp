@@ -15,11 +15,11 @@ namespace zich {
 
         static void checkInput(std::vector<double> &vec, int row, int col);
 
-        static void checkMatSize(int matSize, int row, int col);
 
         void checkSameDimension(const Matrix &other) const;
 
-        static void checkSameDimension(const Matrix &m1, const Matrix &m2);
+
+        void isMultiDefined(const Matrix &other);
 
         //Unary minus
         Matrix operator-() const;
@@ -55,17 +55,17 @@ namespace zich {
 
         Matrix operator--(int dummy_flag_for_postfix_increment);
 
-        friend bool operator!=(const Matrix &m1, const Matrix &m2);
+        bool operator!=(const Matrix &other) const;
 
-        friend bool operator==(const Matrix &m1, const Matrix &m2);
+        bool operator==(const Matrix &other) const;
 
-        friend bool operator>(const Matrix &m1, const Matrix &m2);
+        bool operator>(const Matrix &other) const;
 
-        friend bool operator>=(const Matrix &m1, const Matrix &m2);
+        bool operator>=(const Matrix &other) const;
 
-        friend bool operator<(const Matrix &m1, const Matrix &m2);
+        bool operator<(const Matrix &other) const;
 
-        friend bool operator<=(const Matrix &m1, const Matrix &m2);
+        bool operator<=(const Matrix &other) const;
 
         friend std::ostream &operator<<(std::ostream &output, const Matrix &m);
 

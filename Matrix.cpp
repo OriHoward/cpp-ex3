@@ -20,17 +20,14 @@ namespace zich {
         }
     }
 
-    void Matrix::checkMatSize(int matSize, int row, int col) {
+    void Matrix::isMultiDefined(const Matrix &other) {
+        if (this->col != other.row) {
+            throw std::invalid_argument("The two matrices are not multi defined");
+        }
     }
 
     void Matrix::checkSameDimension(const Matrix &other) const {
         if (this->row != other.row || this->col != other.col) {
-            throw std::invalid_argument("both matrices must be in the same dimension");
-        }
-    }
-
-    void Matrix::checkSameDimension(const Matrix &m1, const Matrix &m2) {
-        if (m1.row != m2.row || m1.col != m2.col) {
             throw std::invalid_argument("both matrices must be in the same dimension");
         }
     }
@@ -61,9 +58,15 @@ namespace zich {
         return *this;
     }
 
-    Matrix Matrix::operator*(const Matrix &other) { return *this; }
+    Matrix Matrix::operator*(const Matrix &other) {
+        this->isMultiDefined(other);
+        return *this;
+    }
 
-    Matrix &Matrix::operator*=(const Matrix &other) { return *this; }
+    Matrix &Matrix::operator*=(const Matrix &other) {
+        this->isMultiDefined(other);
+        return *this;
+    }
 
     Matrix &Matrix::operator*=(double scalar) { return *this; }
 
@@ -77,38 +80,40 @@ namespace zich {
 
     Matrix Matrix::operator--(int dummy_flag_for_postfix_increment) { return *this; }
 
-    bool operator!=(const Matrix &m1, const Matrix &m2) {
-        Matrix::checkSameDimension(m1, m2);
+    bool Matrix::operator!=(const Matrix &other) const {
+        Matrix::checkSameDimension(other);
         return false;
     }
 
-    bool operator==(const Matrix &m1, const Matrix &m2) {
-        Matrix::checkSameDimension(m1, m2);
+    bool Matrix::operator==(const Matrix &other) const {
+        Matrix::checkSameDimension(other);
         return false;
     }
 
-    bool operator>(const Matrix &m1, const Matrix &m2) {
-        Matrix::checkSameDimension(m1, m2);
+    bool Matrix::operator>(const Matrix &other) const {
+        Matrix::checkSameDimension(other);
         return false;
     }
 
-    bool operator>=(const Matrix &m1, const Matrix &m2) {
-        Matrix::checkSameDimension(m1, m2);
+    bool Matrix::operator>=(const Matrix &other) const {
+        Matrix::checkSameDimension(other);
         return false;
     }
 
-    bool operator<(const Matrix &m1, const Matrix &m2) {
-        Matrix::checkSameDimension(m1, m2);
+    bool Matrix::operator<(const Matrix &other) const {
+        Matrix::checkSameDimension(other);
         return false;
     }
 
-    bool operator<=(const Matrix &m1, const Matrix &m2) {
-        Matrix::checkSameDimension(m1, m2);
+    bool Matrix::operator<=(const Matrix &other) const {
+        Matrix::checkSameDimension(other);
         return false;
     }
 
     // not sure :
-    bool operator*(int scalar, const Matrix &m) { return true; }
+    bool operator*(int scalar, const Matrix &m) {
+        return true;
+    }
 
 
     std::ostream &operator<<(std::ostream &output, const Matrix &m) { return output << ""; }

@@ -76,17 +76,17 @@ TEST_CASE ("bad input - can't compare two matrices with different dimensions") {
 TEST_CASE ("bad input - Undefined multiplication between 2 matrices") {
     std::vector<double> vec(300);
     generateRandomVector(vec);
-    for (int i = 1; i < 21; ++i) {
-        // checking if the division is an integer
-        if (300 / i == 300 / double(i)) {
-            Matrix firstMat(vec, i, 300 / i);
-            Matrix secondMat(vec, 300 / (21 - i), 21 - i);
-                    CHECK_THROWS(firstMat * secondMat);
-                    CHECK_THROWS(firstMat *= secondMat);
-                    CHECK_THROWS(secondMat * firstMat);
-                    CHECK_THROWS(secondMat *= firstMat);
-        }
-    }
+            CHECK_THROWS(Matrix(vec, 10, 30) * Matrix(vec, 20, 15));
+            CHECK_THROWS(Matrix(vec, 10, 30) *= Matrix(vec, 20, 15));
+
+            CHECK_THROWS(Matrix(vec, 2, 150) * Matrix(vec, 30, 10));
+            CHECK_THROWS(Matrix(vec, 150, 2) *= Matrix(vec, 20, 15));
+
+            CHECK_THROWS(Matrix(vec, 10, 30) * Matrix(vec, 4, 75));
+            CHECK_THROWS(Matrix(vec, 2, 150) *= Matrix(vec, 75, 4));
+
+            CHECK_THROWS(Matrix(vec, 20, 15) * Matrix(vec, 20, 15));
+            CHECK_THROWS(Matrix(vec, 10, 30) *= Matrix(vec, 10, 30));
 }
 
 TEST_CASE ("good input - well defined multiplication between 2 matrices") {
@@ -126,13 +126,14 @@ TEST_CASE ("bad input - row and cols can't be zero") {
             CHECK_THROWS(Matrix(vec, 10, 0));
             CHECK_THROWS(Matrix(vec, 0, 10));
             CHECK_THROWS(Matrix(vec, 0, 0));
-
 }
 
 //TEST_CASE ("bad output") {
-//    std::vector<double> vec(75);
-//    std::vector<double> vecOfZeros(75);
-//    generateZeroMat(vec);
+//    std::vector<double> vec{2, 4.3, 5.0, 2, 3, 1.7, 4.1, 2.5, 0, 19, 4, 4, 4, 4, 4};
+//    std::vector<double> vecOfZeros(10);
+//    generateZeroMat(vecOfZeros);
+//    CHECK()
+//
 //
 //}
 
