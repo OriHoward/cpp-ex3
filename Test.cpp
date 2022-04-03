@@ -128,16 +128,14 @@ TEST_CASE ("bad input - row and cols can't be zero") {
             CHECK_THROWS(Matrix(vec, 0, 0));
 }
 
-//TEST_CASE ("bad output") {
+//TEST_CASE ("good output") {
 //    std::vector<double> vec{2, 4.3, 5.0, 2, 3, 1.7, 4.1, 2.5, 0, 19, 4, 4, 4, 4, 4};
 //    std::vector<double> vecOfZeros(10);
 //    generateZeroMat(vecOfZeros);
-//    CHECK()
-//
+//            CHECK(std::cout << Matrix(vec, 3, 5) == "[2 4.3 5.0]\n[2 3 1.7]\n[4.1 2.5 0]\n[19 4 4]\n[4 4 4]");
+//}
+
+//TEST_CASE ("bad output") {
 //
 //}
 
-//TEST_CASE ("good output") {
-//
-//}
-//

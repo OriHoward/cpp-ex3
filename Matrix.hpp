@@ -19,7 +19,7 @@ namespace zich {
         void checkSameDimension(const Matrix &other) const;
 
 
-        void isMultiDefined(const Matrix &other);
+        void isMultiDefined(const Matrix &other) const;
 
         //Unary minus
         Matrix operator-() const;

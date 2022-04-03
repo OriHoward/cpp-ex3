@@ -14,13 +14,13 @@ namespace zich {
 
     Matrix::~Matrix() {}
 
-    void Matrix::checkInput(std::vector<double> &vec, int row, int col) {
+    void Matrix::checkInput(std::vector<double> &vec, int row, int col){
         if (row * col != vec.size() || row < 1 || col < 1) {
             throw std::invalid_argument("row and col must be positive and row*col must be equal to size of vector");
         }
     }
 
-    void Matrix::isMultiDefined(const Matrix &other) {
+    void Matrix::isMultiDefined(const Matrix &other) const {
         if (this->col != other.row) {
             throw std::invalid_argument("The two matrices are not multi defined");
         }
