@@ -18,7 +18,7 @@ namespace zich {
 
         void checkSameDimension(const Matrix &other) const;
 
-        std::string toString() const;
+//        std::string toString() const;
 
 
         void isMultiDefined(const Matrix &other) const;
@@ -71,6 +71,8 @@ namespace zich {
         friend std::ostream &operator<<(std::ostream &output, const Matrix &m);
 
         friend std::istream &operator>>(std::istream &input, Matrix &m);
+
+        friend std::stringstream &operator<<(std::stringstream &output, const Matrix &m);
 
 //        Matrix bool operator*(int, const Matrix &m);
 

@@ -32,40 +32,42 @@ namespace zich {
         }
     }
 
-    std::string Matrix::toString() const {
-        std::string strMat;
-        int currCol = 1;
-        std::string::size_type index = 0;
-        while (index < this->mat.size()) {
-            strMat += "[";
-            strMat += std::to_string(this->mat[index++]);
-            while (currCol < this->col) {
-//                strMat += " " + std::to_string(std::float_round_style(this->mat[index++]));
-                strMat += " " + std::to_string(this->mat[index++]);
-                currCol++;
-            }
-            strMat += "]";
-            if (index < this->mat.size()) {
-                strMat += "\n";
-            }
-            currCol = 1;
-        }
-        return strMat;
-    }
+//    std::string Matrix::toString() const {
+//        std::string strMat;
+//        std::string matNum;
+//        int currCol = 1;
+//        std::string::size_type index = 0;
+//        while (index < this->mat.size()) {
+//            strMat += "[";
+//            matNum = std::to_string(this->mat[index++]);
+//            strMat += matNum.erase(matNum.find_last_not_of('0') + 1, std::string::npos);
+//            while (currCol < this->col) {
+//                matNum = std::to_string(this->mat[index++]);
+//                strMat += " " + matNum.erase(matNum.find_last_not_of('0') + 1, std::string::npos);
+//                currCol++;
+//            }
+//            strMat += "]";
+//            if (index < this->mat.size()) {
+//                strMat += "\n";
+//            }
+//            currCol = 1;
+//        }
+//        return strMat;
+//    }
 
 
     Matrix Matrix::operator-() const {
         Matrix minusMat(this->mat, this->row, this->col);
-        for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
-            minusMat *= -1;
+        for (std::string::size_type i = 0; i < minusMat.mat.size(); ++i) {
+            minusMat.mat[i] *= -1;
         }
         return minusMat;
     }
 
     Matrix Matrix::operator+() const {
         Matrix plusMat(this->mat, this->row, this->col);
-        for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
-            plusMat *= -1;
+        for (std::string::size_type i = 0; i < plusMat.mat.size(); ++i) {
+            plusMat.mat[i] *= -1;
         }
         return plusMat;
     }
@@ -125,14 +127,36 @@ namespace zich {
     Matrix &Matrix::operator*=(double scalar) { return *this; }
 
 //prefix increment takes no arguments:
-    Matrix &Matrix::operator++() { return *this; }
+    Matrix &Matrix::operator++() {
+        for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
+            this->mat[i]++;
+        }
+        return *this;
+    }
 
-    Matrix &Matrix::operator--() { return *this; }
+    Matrix &Matrix::operator--() {
+        for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
+            this->mat[i]--;
+        }
+        return *this;
+    }
 
 //postfix increment:
-    Matrix Matrix::operator++(int dummy_flag_for_postfix_increment) { return *this; }
+    Matrix Matrix::operator++(int dummy_flag_for_postfix_increment) {
+        Matrix matCopy(this->mat, this->row, this->col);
+        for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
+            this->mat[i]++;
+        }
+        return matCopy;
+    }
 
-    Matrix Matrix::operator--(int dummy_flag_for_postfix_increment) { return *this; }
+    Matrix Matrix::operator--(int dummy_flag_for_postfix_increment) {
+        Matrix matCopy(this->mat, this->row, this->col);
+        for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
+            this->mat[i]--;
+        }
+        return matCopy;
+    }
 
     bool Matrix::operator!=(const Matrix &other) const {
         this->checkSameDimension(other);
@@ -206,12 +230,40 @@ namespace zich {
 
 
     std::ostream &operator<<(std::ostream &output, const Matrix &m) {
-        output << m.toString();
-//        output << " lala ";
+        int currCol = 1;
+        std::string::size_type index = 0;
+        while (index < m.mat.size()) {
+            output << "[" << m.mat[index++];
+            while (currCol < m.col) {
+                output << " " << m.mat[index++];
+                currCol++;
+            }
+            output << "]";
+            if (index < m.mat.size()) {
+                output << "\n";
+            }
+            currCol = 1;
+        }
         return output;
     }
 
     std::istream &operator>>(std::istream &input, Matrix &m) { return input; }
 
-
+    std::stringstream &operator<<(std::stringstream &output, const Matrix &m) {
+        int currCol = 1;
+        std::string::size_type index = 0;
+        while (index < m.mat.size()) {
+            output << "[" << m.mat[index++];
+            while (currCol < m.col) {
+                output << " " << m.mat[index++];
+                currCol++;
+            }
+            output << "]";
+            if (index < m.mat.size()) {
+                output << "\n";
+            }
+            currCol = 1;
+        }
+        return output;
+    }
 }

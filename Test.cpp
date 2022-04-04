@@ -2,6 +2,9 @@
 #include "Matrix.hpp"
 #include <vector>
 #include <assert.h>
+#include <string>
+#include <iostream>
+#include <sstream>
 
 using namespace zich;
 
@@ -134,18 +137,21 @@ TEST_CASE ("good output") {
     std::vector<double> unaryMinus{-1, -2, -3, -4, -5, -6, -7, -8, -9};
     std::vector<double> unaryPlus{1, 2, 3, 4, 5, 6, 7, 8, 9};
     std::vector<double> vecOfZeros(9);
-    std::vector<double> eitanVec{0, 3.7, 0};
-    std::cout << Matrix(eitanVec, 3, 1) << std::endl;
-    std::cout << Matrix(eitanVec, 1, 3) << std::endl;
-
     generateZeroMat(vecOfZeros);
-    Matrix toBeZeros{unaryPlus, 3, 3};
-//    toBeZeros += Matrix(unaryMinus, 3, 3);
-//            CHECK_EQ(toBeZeros, Matrix(vecOfZeros, 3, 3));
-//    std::cout << Matrix(unaryPlus, 3, 3);
-//            assert(Matrix(unaryMinus, 3, 3) == -Matrix(unaryPlus, 3, 3));
 
-//            CHECK_EQ(Matrix(vec, 5, 3), std::cout<<"[2 4.3 5.0]\n[2 3 1.7]\n[4.1 2.5 0]\n[19 4 4]\n[4 4 4]");
+    Matrix newMat{unaryPlus, 3, 3};
+    newMat += Matrix(unaryMinus, 3, 3);
+            CHECK_EQ(newMat, Matrix(vecOfZeros, 3, 3));
+
+    newMat -= Matrix(unaryMinus, 3, 3);
+            CHECK_EQ(newMat, Matrix(unaryPlus, 3, 3));
+            CHECK_EQ(newMat + newMat, Matrix(std::vector<double>{2, 4, 6, 8, 10, 12, 14, 16, 18}, 3, 3));
+            CHECK_EQ(newMat - Matrix(vecOfZeros, 3, 3), newMat);
+            CHECK_EQ(Matrix(unaryMinus, 3, 3), -Matrix(unaryPlus, 3, 3));
+
+    std::stringstream ss;
+    ss << Matrix(vec, 5, 3);
+            CHECK(ss.str() == "[2 4.3 5]\n[2 3 1.7]\n[4.1 2.5 0]\n[19 4 4]\n[4 4 4]");
 }
 
 //TEST_CASE ("bad output") {
