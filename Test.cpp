@@ -1,6 +1,7 @@
 #include "doctest.h"
 #include "Matrix.hpp"
 #include <vector>
+#include <assert.h>
 
 using namespace zich;
 
@@ -128,12 +129,20 @@ TEST_CASE ("bad input - row and cols can't be zero") {
             CHECK_THROWS(Matrix(vec, 0, 0));
 }
 
-//TEST_CASE ("good output") {
-//    std::vector<double> vec{2, 4.3, 5.0, 2, 3, 1.7, 4.1, 2.5, 0, 19, 4, 4, 4, 4, 4};
-//    std::vector<double> vecOfZeros(10);
-//    generateZeroMat(vecOfZeros);
-//            CHECK(std::cout << Matrix(vec, 3, 5) == "[2 4.3 5.0]\n[2 3 1.7]\n[4.1 2.5 0]\n[19 4 4]\n[4 4 4]");
-//}
+TEST_CASE ("good output") {
+    std::vector<double> vec{2, 4.3, 5.0, 2, 3, 1.7, 4.1, 2.5, 0, 19, 4, 4, 4, 4, 4};
+    std::vector<double> unaryMinus{-1, -2, -3, -4, -5, -6, -7, -8, -9};
+    std::vector<double> unaryPlus{1, 2, 3, 4, 5, 6, 7, 8, 9};
+    std::vector<double> vecOfZeros(9);
+    generateZeroMat(vecOfZeros);
+//    Matrix toBeZeros{unaryPlus, 3, 3};
+//    toBeZeros += Matrix(unaryMinus, 3, 3);
+//            CHECK_EQ(toBeZeros, Matrix(vecOfZeros, 3, 3));
+//    std::cout << Matrix(unaryPlus, 3, 3);
+//            assert(Matrix(unaryMinus, 3, 3) == -Matrix(unaryPlus, 3, 3));
+
+//            CHECK_EQ(Matrix(vec, 5, 3), std::cout<<"[2 4.3 5.0]\n[2 3 1.7]\n[4.1 2.5 0]\n[19 4 4]\n[4 4 4]");
+}
 
 //TEST_CASE ("bad output") {
 //

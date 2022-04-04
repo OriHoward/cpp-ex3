@@ -8,38 +8,39 @@
 namespace zich {
     class Matrix {
     private:
+        std::vector<double> mat;
         int row, col;
-        std::vector<double> vec;
 
     public:
 
-        static void checkInput(std::vector<double> &vec, int row, int col);
+        static void checkInput(unsigned int matSize, int row, int col);
 
 
         void checkSameDimension(const Matrix &other) const;
+
+        std::string toString() const;
 
 
         void isMultiDefined(const Matrix &other) const;
 
         //Unary minus
-        Matrix operator-() const;
+        Matrix operator-(); // check about the const in both minus and plus
 
-        Matrix operator+() const;
+        Matrix operator+();
 
 
         Matrix(std::vector<double> &vec, int row, int col);
 
-        ~Matrix();
 
-        Matrix operator+(const Matrix &other);
+        Matrix operator+(const Matrix &other) const;
 
         Matrix &operator+=(const Matrix &other);
 
-        Matrix operator-(const Matrix &other);
+        Matrix operator-(const Matrix &other) const;
 
         Matrix &operator-=(const Matrix &other);
 
-        Matrix operator*(const Matrix &other);
+        Matrix operator*(const Matrix &other) const;
 
         Matrix &operator*=(const Matrix &other);
 
