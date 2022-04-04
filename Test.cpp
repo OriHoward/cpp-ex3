@@ -164,7 +164,7 @@ TEST_CASE ("good output") {
             CHECK(ss.str() == "[0 0 0]\n[0 0 0]\n[0 0 0]");
     ss.str("");
     ss << -Matrix(vecOfZeros, 3, 3);
-            CHECK_EQ(ss.str() == "[0 0 0]\n[0 0 0]\n[0 0 0]");
+            CHECK_EQ(ss.str(), "[0 0 0]\n[0 0 0]\n[0 0 0]");
 }
 
 //TEST_CASE ("bad output") {

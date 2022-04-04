@@ -201,11 +201,13 @@ namespace zich {
         return sumOfA <= sumOfB;
     }
 
-    // not sure :
-//    Matrix operator*(int scalar, const Matrix &m) {
-////        std::vector<double> newVec;
-//        return Matrix(, 0, 0);
-//    }
+    Matrix operator*(const int scalar, const Matrix &m) {
+        Matrix newMat(m.mat, m.row, m.col);
+        for (std::string::size_type i = 0; i < newMat.mat.size(); ++i) {
+            newMat.mat[i] *= scalar;
+        }
+        return newMat;
+    }
 
 
     std::ostream &operator<<(std::ostream &output, const Matrix &m) {

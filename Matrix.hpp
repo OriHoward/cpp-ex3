@@ -71,7 +71,7 @@ namespace zich {
 
         friend std::stringstream &operator<<(std::stringstream &output, const Matrix &m);
 
-//        Matrix bool operator*(int, const Matrix &m);
+        friend Matrix operator*(const int, const Matrix &m);
 
     };
 
