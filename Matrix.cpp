@@ -32,34 +32,13 @@ namespace zich {
         }
     }
 
-//    std::string Matrix::toString() const {
-//        std::string strMat;
-//        std::string matNum;
-//        int currCol = 1;
-//        std::string::size_type index = 0;
-//        while (index < this->mat.size()) {
-//            strMat += "[";
-//            matNum = std::to_string(this->mat[index++]);
-//            strMat += matNum.erase(matNum.find_last_not_of('0') + 1, std::string::npos);
-//            while (currCol < this->col) {
-//                matNum = std::to_string(this->mat[index++]);
-//                strMat += " " + matNum.erase(matNum.find_last_not_of('0') + 1, std::string::npos);
-//                currCol++;
-//            }
-//            strMat += "]";
-//            if (index < this->mat.size()) {
-//                strMat += "\n";
-//            }
-//            currCol = 1;
-//        }
-//        return strMat;
-//    }
-
 
     Matrix Matrix::operator-() const {
         Matrix minusMat(this->mat, this->row, this->col);
         for (std::string::size_type i = 0; i < minusMat.mat.size(); ++i) {
-            minusMat.mat[i] *= -1;
+            if (minusMat.mat[i] != 0) {
+                minusMat.mat[i] *= -1;
+            }
         }
         return minusMat;
     }

@@ -134,24 +134,37 @@ TEST_CASE ("bad input - row and cols can't be zero") {
 
 TEST_CASE ("good output") {
     std::vector<double> vec{2, 4.3, 5.0, 2, 3, 1.7, 4.1, 2.5, 0, 19, 4, 4, 4, 4, 4};
-    std::vector<double> unaryMinus{-1, -2, -3, -4, -5, -6, -7, -8, -9};
-    std::vector<double> unaryPlus{1, 2, 3, 4, 5, 6, 7, 8, 9};
+    std::vector<double> negativeMat{-1, -2, -3, -4, -5, -6, -7, -8, -9};
+    std::vector<double> positiveMat{1, 2, 3, 4, 5, 6, 7, 8, 9};
     std::vector<double> vecOfZeros(9);
     generateZeroMat(vecOfZeros);
-
-    Matrix newMat{unaryPlus, 3, 3};
-    newMat += Matrix(unaryMinus, 3, 3);
+    /**
+     * testing the operators : +, += , - ,-=
+     */
+    Matrix newMat{positiveMat, 3, 3};
+    newMat += Matrix(negativeMat, 3, 3);
             CHECK_EQ(newMat, Matrix(vecOfZeros, 3, 3));
 
-    newMat -= Matrix(unaryMinus, 3, 3);
-            CHECK_EQ(newMat, Matrix(unaryPlus, 3, 3));
+    newMat -= Matrix(negativeMat, 3, 3);
+            CHECK_EQ(newMat, Matrix(positiveMat, 3, 3));
             CHECK_EQ(newMat + newMat, Matrix(std::vector<double>{2, 4, 6, 8, 10, 12, 14, 16, 18}, 3, 3));
             CHECK_EQ(newMat - Matrix(vecOfZeros, 3, 3), newMat);
-            CHECK_EQ(Matrix(unaryMinus, 3, 3), -Matrix(unaryPlus, 3, 3));
-
+            CHECK_EQ(Matrix(negativeMat, 3, 3), -Matrix(positiveMat, 3, 3));
+    /**
+     * testing the string output
+     */
     std::stringstream ss;
     ss << Matrix(vec, 5, 3);
-            CHECK(ss.str() == "[2 4.3 5]\n[2 3 1.7]\n[4.1 2.5 0]\n[19 4 4]\n[4 4 4]");
+            CHECK_EQ(ss.str(), "[2 4.3 5]\n[2 3 1.7]\n[4.1 2.5 0]\n[19 4 4]\n[4 4 4]");
+    ss.str("");
+    ss << Matrix(negativeMat, 3, 3);
+            CHECK(ss.str() == "[-1 -2 -3]\n[-4 -5 -6]\n[-7 -8 -9]");
+    ss.str("");
+    ss << Matrix(vecOfZeros, 3, 3);
+            CHECK(ss.str() == "[0 0 0]\n[0 0 0]\n[0 0 0]");
+    ss.str("");
+    ss << -Matrix(vecOfZeros, 3, 3);
+            CHECK_EQ(ss.str() == "[0 0 0]\n[0 0 0]\n[0 0 0]");
 }
 
 //TEST_CASE ("bad output") {
