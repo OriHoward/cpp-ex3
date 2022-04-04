@@ -4,15 +4,14 @@
 #include <vector>
 #include <iostream>
 #include <iomanip>
+#include <math.h>
+
+//todo change size type to unsign int
 
 namespace zich {
-
-    Matrix::Matrix(std::vector<double> &vec, int row, int col) {
-        checkInput(vec.size(), row, col);
-        this->mat = vec;
-        this->row = row;
-        this->col = col;
-    }
+    // change constructor later
+    Matrix::Matrix(const std::vector<double> &vec, int row, int col)
+            : mat(vec), row(row), col(col) { checkInput(vec.size(), row, col); }
 
 
     void Matrix::checkInput(unsigned int matSize, int row, int col) {
@@ -39,9 +38,10 @@ namespace zich {
         std::string::size_type index = 0;
         while (index < this->mat.size()) {
             strMat += "[";
-            strMat += std::to_string(this->mat[index++]).substr(0, 4);
+            strMat += std::to_string(this->mat[index++]);
             while (currCol < this->col) {
-                strMat += " " + std::to_string(this->mat[index++]).substr(0, 4);
+//                strMat += " " + std::to_string(std::float_round_style(this->mat[index++]));
+                strMat += " " + std::to_string(this->mat[index++]);
                 currCol++;
             }
             strMat += "]";
@@ -54,22 +54,27 @@ namespace zich {
     }
 
 
-    Matrix Matrix::operator-() { // check about the const
+    Matrix Matrix::operator-() const {
+        Matrix minusMat(this->mat, this->row, this->col);
         for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
-            this->mat[i] *= -1;
+            minusMat *= -1;
         }
-        return *this;
+        return minusMat;
     }
 
-    Matrix Matrix::operator+() { return *this; }
+    Matrix Matrix::operator+() const {
+        Matrix plusMat(this->mat, this->row, this->col);
+        for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
+            plusMat *= -1;
+        }
+        return plusMat;
+    }
 
 
     Matrix Matrix::operator+(const Matrix &other) const {
         this->checkSameDimension(other);
-        std::vector<double> newVec;
-        newVec.reserve(other.mat.size());
-        Matrix newMat(newVec, this->row, this->col);
-        for (std::string::size_type i = 0; i < row * col; ++i) {
+        Matrix newMat(this->mat, this->row, this->col);
+        for (std::string::size_type i = 0; i < newMat.mat.size(); ++i) {
             newMat.mat[i] += other.mat[i];
         }
         return newMat;
@@ -85,7 +90,11 @@ namespace zich {
 
     Matrix Matrix::operator-(const Matrix &other) const {
         this->checkSameDimension(other);
-        return *this;
+        Matrix newMat(this->mat, this->row, this->col);
+        for (std::string::size_type i = 0; i < newMat.mat.size(); ++i) {
+            newMat.mat[i] -= other.mat[i];
+        }
+        return newMat;
     }
 
     Matrix &Matrix::operator-=(const Matrix &other) {
@@ -98,7 +107,14 @@ namespace zich {
 
     Matrix Matrix::operator*(const Matrix &other) const {
         this->isMultiDefined(other);
+//        std::vector<double> newVec;
+//        int newMatSize = this->row * other.col;
+////        newVec.reserve(newMatSize);
+//        Matrix newMat(newVec, this->row, other.col);
+//
+//        return newMat;
         return *this;
+
     }
 
     Matrix &Matrix::operator*=(const Matrix &other) {
@@ -120,42 +136,78 @@ namespace zich {
 
     bool Matrix::operator!=(const Matrix &other) const {
         this->checkSameDimension(other);
+        for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
+            if (this->mat[i] != other.mat[i]) {
+                return true;
+            }
+        }
         return false;
     }
 
     bool Matrix::operator==(const Matrix &other) const {
         this->checkSameDimension(other);
-        return false;
+        for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
+            if (this->mat[i] != other.mat[i]) {
+                return false;
+            }
+        }
+        return true;
     }
 
     bool Matrix::operator>(const Matrix &other) const {
         this->checkSameDimension(other);
-        return false;
+        double sumOfA = 0;
+        double sumOfB = 0;
+        for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
+            sumOfA += this->mat[i];
+            sumOfB += other.mat[i];
+        }
+        return sumOfA > sumOfB;
     }
 
     bool Matrix::operator>=(const Matrix &other) const {
         this->checkSameDimension(other);
-        return false;
+        double sumOfA = 0;
+        double sumOfB = 0;
+        for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
+            sumOfA += this->mat[i];
+            sumOfB += other.mat[i];
+        }
+        return sumOfA >= sumOfB;
     }
 
     bool Matrix::operator<(const Matrix &other) const {
         this->checkSameDimension(other);
-        return false;
+        double sumOfA = 0;
+        double sumOfB = 0;
+        for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
+            sumOfA += this->mat[i];
+            sumOfB += other.mat[i];
+        }
+        return sumOfA < sumOfB;
     }
 
     bool Matrix::operator<=(const Matrix &other) const {
         this->checkSameDimension(other);
-        return false;
+        double sumOfA = 0;
+        double sumOfB = 0;
+        for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
+            sumOfA += this->mat[i];
+            sumOfB += other.mat[i];
+        }
+        return sumOfA <= sumOfB;
     }
 
     // not sure :
-    bool operator*(int scalar, const Matrix &m) {
-        return true;
-    }
+//    Matrix operator*(int scalar, const Matrix &m) {
+////        std::vector<double> newVec;
+//        return Matrix(, 0, 0);
+//    }
 
 
     std::ostream &operator<<(std::ostream &output, const Matrix &m) {
         output << m.toString();
+//        output << " lala ";
         return output;
     }
 

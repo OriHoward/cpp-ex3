@@ -24,12 +24,12 @@ namespace zich {
         void isMultiDefined(const Matrix &other) const;
 
         //Unary minus
-        Matrix operator-(); // check about the const in both minus and plus
+        Matrix operator-() const;
 
-        Matrix operator+();
+        Matrix operator+() const;
 
 
-        Matrix(std::vector<double> &vec, int row, int col);
+        Matrix(const std::vector<double> &vec, int row, int col);
 
 
         Matrix operator+(const Matrix &other) const;
@@ -72,7 +72,7 @@ namespace zich {
 
         friend std::istream &operator>>(std::istream &input, Matrix &m);
 
-        friend bool operator*(int, const Matrix &m);
+//        Matrix bool operator*(int, const Matrix &m);
 
     };
 

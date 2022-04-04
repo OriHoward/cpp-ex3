@@ -134,8 +134,12 @@ TEST_CASE ("good output") {
     std::vector<double> unaryMinus{-1, -2, -3, -4, -5, -6, -7, -8, -9};
     std::vector<double> unaryPlus{1, 2, 3, 4, 5, 6, 7, 8, 9};
     std::vector<double> vecOfZeros(9);
+    std::vector<double> eitanVec{0, 3.7, 0};
+    std::cout << Matrix(eitanVec, 3, 1) << std::endl;
+    std::cout << Matrix(eitanVec, 1, 3) << std::endl;
+
     generateZeroMat(vecOfZeros);
-//    Matrix toBeZeros{unaryPlus, 3, 3};
+    Matrix toBeZeros{unaryPlus, 3, 3};
 //    toBeZeros += Matrix(unaryMinus, 3, 3);
 //            CHECK_EQ(toBeZeros, Matrix(vecOfZeros, 3, 3));
 //    std::cout << Matrix(unaryPlus, 3, 3);
