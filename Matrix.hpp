@@ -23,7 +23,7 @@ namespace zich {
         //Unary minus
         Matrix operator-() const;
 
-        Matrix operator+() const;
+        Matrix operator+() const; // should we implement ?
 
 
         Matrix(const std::vector<double> &vec, int row, int col);
@@ -41,7 +41,7 @@ namespace zich {
 
         Matrix &operator*=(const Matrix &other);
 
-        Matrix &operator*=(double scalar);
+        Matrix &operator*=(const double scalar);
 
         //prefix increment takes no arguments:
         Matrix &operator++();
@@ -65,13 +65,15 @@ namespace zich {
 
         bool operator<=(const Matrix &other) const;
 
+
+
         friend std::ostream &operator<<(std::ostream &output, const Matrix &m);
 
         friend std::istream &operator>>(std::istream &input, Matrix &m);
 
-        friend std::stringstream &operator<<(std::stringstream &output, const Matrix &m);
+//        friend std::stringstream &operator<<(std::stringstream &output, const Matrix &m);
 
-        friend Matrix operator*(const int, const Matrix &m);
+        friend Matrix operator*(const double, const Matrix &m);
 
     };
 

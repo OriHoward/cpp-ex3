@@ -7,6 +7,9 @@
 #include <math.h>
 
 //todo change size type to unsign int
+//todo add deep copy to cpp and test
+//todo add subcases
+//todo test postfix and prefix and * and *=
 
 namespace zich {
     // change constructor later
@@ -103,7 +106,7 @@ namespace zich {
         return *this;
     }
 
-    Matrix &Matrix::operator*=(double scalar) { return *this; }
+    Matrix &Matrix::operator*=(const double scalar) { return *this; }
 
 //prefix increment takes no arguments:
     Matrix &Matrix::operator++() {
@@ -201,7 +204,7 @@ namespace zich {
         return sumOfA <= sumOfB;
     }
 
-    Matrix operator*(const int scalar, const Matrix &m) {
+    Matrix operator*(const double scalar, const Matrix &m) {
         Matrix newMat(m.mat, m.row, m.col);
         for (std::string::size_type i = 0; i < newMat.mat.size(); ++i) {
             newMat.mat[i] *= scalar;
@@ -230,21 +233,21 @@ namespace zich {
 
     std::istream &operator>>(std::istream &input, Matrix &m) { return input; }
 
-    std::stringstream &operator<<(std::stringstream &output, const Matrix &m) {
-        int currCol = 1;
-        std::string::size_type index = 0;
-        while (index < m.mat.size()) {
-            output << "[" << m.mat[index++];
-            while (currCol < m.col) {
-                output << " " << m.mat[index++];
-                currCol++;
-            }
-            output << "]";
-            if (index < m.mat.size()) {
-                output << "\n";
-            }
-            currCol = 1;
-        }
-        return output;
-    }
+//    std::stringstream &operator<<(std::stringstream &output, const Matrix &m) {
+//        int currCol = 1;
+//        std::string::size_type index = 0;
+//        while (index < m.mat.size()) {
+//            output << "[" << m.mat[index++];
+//            while (currCol < m.col) {
+//                output << " " << m.mat[index++];
+//                currCol++;
+//            }
+//            output << "]";
+//            if (index < m.mat.size()) {
+//                output << "\n";
+//            }
+//            currCol = 1;
+//        }
+//        return output;
+//    }
 }
