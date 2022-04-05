@@ -7,6 +7,7 @@
 
 
 const int VEC_SIZE = 300;
+const int NUM_OF_LOOPS = 75;
 
 using namespace zich;
 
@@ -28,7 +29,7 @@ TEST_CASE ("bad input - row*col NOT equal to size of vector") {
     generateRandomVector(vec);
     srand(time(NULL));
     int row, col;
-    for (int i = 0; i < 100; ++i) {
+    for (int i = 0; i <= NUM_OF_LOOPS; ++i) {
         row = 1 + std::rand() % 30;
         col = 1 + std::rand() % 30;
         if (row * col != vec.size()) {
@@ -40,7 +41,7 @@ TEST_CASE ("bad input - row*col NOT equal to size of vector") {
 TEST_CASE ("bad input - can't add or subtract or compare two matrices with different dimensions") {
     std::vector<double> vec(VEC_SIZE);
     generateRandomVector(vec);
-    for (int i = 1; i < 21; ++i) {
+    for (int i = 1; i <= NUM_OF_LOOPS; ++i) {
         // checking if the division is an integer
         if (VEC_SIZE / i == VEC_SIZE / double(i)) {
             Matrix firstMat(vec, i, VEC_SIZE / i);
@@ -52,11 +53,12 @@ TEST_CASE ("bad input - can't add or subtract or compare two matrices with diffe
                     CHECK_THROWS(secondMat - firstMat);
                     CHECK_THROWS(secondMat -= firstMat);
                     CHECK_THROWS(bool check(firstMat == secondMat)); // to check which one is good
-                    CHECK_THROWS(if (firstMat != secondMat));
-                    CHECK_THROWS(if (firstMat > secondMat));
-                    CHECK_THROWS(if (firstMat < secondMat));
-                    CHECK_THROWS(if (firstMat <= secondMat));
-                    CHECK_THROWS(if (firstMat >= secondMat));
+                    CHECK_THROWS(bool check(firstMat != secondMat));
+                    CHECK_THROWS(bool check(firstMat > secondMat));
+                    CHECK_THROWS(bool check(firstMat < secondMat));
+                    CHECK_THROWS(bool check(firstMat <= secondMat));
+                    CHECK_THROWS(bool check(firstMat >= secondMat));
+
         }
     }
 }
@@ -81,7 +83,7 @@ TEST_CASE ("bad input - Undefined multiplication between 2 matrices") {
 TEST_CASE ("good input - well defined multiplication between 2 matrices") {
     std::vector<double> vec(VEC_SIZE);
     generateRandomVector(vec);
-    for (int i = 1; i < 20; ++i) {
+    for (int i = 1; i <= NUM_OF_LOOPS; ++i) {
         // checking if the division is an integer
         if (VEC_SIZE / i == VEC_SIZE / double(i)) {
             Matrix firstMat(vec, i, VEC_SIZE / i);
@@ -118,19 +120,31 @@ TEST_CASE ("bad input - row and cols can't be zero") {
 }
 
 TEST_CASE ("good output") {
+
+    /**
+     * init all vectors
+     */
     std::vector<double> vec{2, 4.3, 5.0, 2, 3, 1.7, 4.1, 2.5, 0, 19, 4, 4, 4, 4, 4};
     std::vector<double> negativeVec{-1, -2, -3, -4, -5, -6, -7, -8, -9};
     std::vector<double> positiveVec{1, 2, 3, 4, 5, 6, 7, 8, 9};
     std::vector<double> vecOfZeros{0, 0, 0, 0, 0, 0, 0, 0, 0};
-    std::vector<double> doubleNegativeVec{2, 4, 6, 8, 10, 12, 14, 16, 18};
+    std::vector<double> doubleNegativeVec{-2, -4, -6, -8, -10, -12, -14, -16, -18};
+    std::vector<double> doublePositiveVec{2, 4, 6, 8, 10, 12, 14, 16, 18};
+
+    /**
+     * init all matrices
+     */
     Matrix positiveMat(positiveVec, 3, 3);
     Matrix negativeMat(negativeVec, 3, 3);
     Matrix matOfZeros(vecOfZeros, 3, 3);
     Matrix regularMat(vec, 5, 3);
     Matrix doubleNegativeMat(doubleNegativeVec, 3, 3);
+    Matrix doublePositiveMat(doublePositiveVec, 3, 3);
+
+    std::stringstream ss;
 
     /**
-     * testing the operators : +, += , - ,-= in sub cases.
+     * Test the operators : +, += , - ,-= in sub cases.
      */
             SUBCASE("+operator") {
                 CHECK_EQ(positiveMat + negativeMat, matOfZeros);
@@ -145,36 +159,35 @@ TEST_CASE ("good output") {
     }
 
             SUBCASE("-operator") {
-                CHECK_EQ((negativeMat) - positiveMat, doubleNegativeMat);
+                CHECK_EQ(negativeMat - positiveMat, doubleNegativeMat);
                 CHECK_EQ(positiveMat - positiveMat, matOfZeros);
     }
             SUBCASE("-=operator") {
         negativeMat -= negativeMat;
                 CHECK_EQ(negativeMat, matOfZeros);
+        positiveMat -= -(positiveMat);
+                CHECK_EQ(positiveMat, doublePositiveMat);
 
     }
 
-//
-//    newMat -= Matrix(negativeMat, 3, 3);
-//            CHECK_EQ(newMat, Matrix(positiveMat, 3, 3));
-//            CHECK_EQ(newMat + newMat, Matrix(std::vector<double>{2, 4, 6, 8, 10, 12, 14, 16, 18}, 3, 3));
-//            CHECK_EQ(newMat - Matrix(vecOfZeros, 3, 3), newMat);
-//            CHECK_EQ(Matrix(negativeMat, 3, 3), -Matrix(positiveMat, 3, 3));
     /**
-     * testing the string output
+     * Test the string output
      */
-//    std::stringstream ss;
-//    ss << Matrix(vec, 5, 3);
-//            CHECK_EQ(ss.str(), "[2 4.3 5]\n[2 3 1.7]\n[4.1 2.5 0]\n[19 4 4]\n[4 4 4]");
-//    ss.str("");
-//    ss << Matrix(negativeMat, 3, 3);
-//            CHECK(ss.str() == "[-1 -2 -3]\n[-4 -5 -6]\n[-7 -8 -9]");
-//    ss.str("");
-//    ss << Matrix(vecOfZeros, 3, 3);
-//            CHECK(ss.str() == "[0 0 0]\n[0 0 0]\n[0 0 0]");
-//    ss.str("");
-//    ss << -Matrix(vecOfZeros, 3, 3);
-//            CHECK_EQ(ss.str(), "[0 0 0]\n[0 0 0]\n[0 0 0]");
+
+            SUBCASE("Test Cout") {
+        ss << regularMat;
+                CHECK_EQ(ss.str(), "[2 4.3 5]\n[2 3 1.7]\n[4.1 2.5 0]\n[19 4 4]\n[4 4 4]");
+        ss.str(""); // clean the string
+        ss << negativeMat;
+                CHECK(ss.str() == "[-1 -2 -3]\n[-4 -5 -6]\n[-7 -8 -9]");
+        ss.str("");
+        ss << matOfZeros;
+                CHECK(ss.str() == "[0 0 0]\n[0 0 0]\n[0 0 0]");
+        ss.str("");
+        ss << -matOfZeros;
+                CHECK(ss.str() == "[0 0 0]\n[0 0 0]\n[0 0 0]");
+
+    }
 }
 
 //TEST_CASE ("bad output") {

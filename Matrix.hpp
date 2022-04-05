@@ -66,12 +66,10 @@ namespace zich {
         bool operator<=(const Matrix &other) const;
 
 
-
         friend std::ostream &operator<<(std::ostream &output, const Matrix &m);
 
         friend std::istream &operator>>(std::istream &input, Matrix &m);
 
-//        friend std::stringstream &operator<<(std::stringstream &output, const Matrix &m);
 
         friend Matrix operator*(const double, const Matrix &m);
 

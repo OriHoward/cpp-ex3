@@ -233,21 +233,4 @@ namespace zich {
 
     std::istream &operator>>(std::istream &input, Matrix &m) { return input; }
 
-//    std::stringstream &operator<<(std::stringstream &output, const Matrix &m) {
-//        int currCol = 1;
-//        std::string::size_type index = 0;
-//        while (index < m.mat.size()) {
-//            output << "[" << m.mat[index++];
-//            while (currCol < m.col) {
-//                output << " " << m.mat[index++];
-//                currCol++;
-//            }
-//            output << "]";
-//            if (index < m.mat.size()) {
-//                output << "\n";
-//            }
-//            currCol = 1;
-//        }
-//        return output;
-//    }
 }
