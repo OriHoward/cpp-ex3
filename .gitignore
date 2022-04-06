@@ -15,7 +15,8 @@
 *.so
 *.dylib
 *.dll
-
+.idea
+cmake-build-debug
 # Fortran module files
 *.mod
 *.smod
