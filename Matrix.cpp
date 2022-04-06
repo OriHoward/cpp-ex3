@@ -8,11 +8,13 @@
 
 //todo change size type to unsign int
 //todo add deep copy to cpp and test
-//todo add subcases
 //todo test postfix and prefix and * and *=
+//todo function for compare
+//todo change to {}
+
 
 namespace zich {
-    // change constructor later
+
     Matrix::Matrix(const std::vector<double> &vec, int row, int col)
             : mat(vec), row(row), col(col) { checkInput(vec.size(), row, col); }
 
@@ -91,14 +93,24 @@ namespace zich {
 
     Matrix Matrix::operator*(const Matrix &other) const {
         this->isMultiDefined(other);
-//        std::vector<double> newVec;
-//        int newMatSize = this->row * other.col;
-////        newVec.reserve(newMatSize);
-//        Matrix newMat(newVec, this->row, other.col);
-//
-//        return newMat;
-        return *this;
-
+        std::vector<double> newVec;
+        newVec.reserve(static_cast <unsigned int>(this->row * other.col));
+        Matrix newMat(newVec, this->row, other.col);
+        unsigned int matIndex = 0;
+        unsigned int rowCount = 0;
+        unsigned int jump = static_cast <unsigned int>(other.col);
+        double currSum = 0;
+        for (unsigned int currRow = 0; currRow < other.col; ++currRow) {
+            for (unsigned int j = 0; j < this->mat.size(); ++j) {
+                currSum += this->mat[j] * other.mat[currRow + (rowCount++ * jump)];
+                if (rowCount == other.row - 1) {
+                    newMat.mat[matIndex] = currSum;
+                    currSum = 0;
+                    rowCount = 0;
+                }
+            }
+        }
+        return newMat;
     }
 
     Matrix &Matrix::operator*=(const Matrix &other) {
@@ -106,7 +118,12 @@ namespace zich {
         return *this;
     }
 
-    Matrix &Matrix::operator*=(const double scalar) { return *this; }
+    Matrix &Matrix::operator*=(const double scalar) {
+        for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
+            this->mat[i] *= scalar;
+        }
+        return *this;
+    }
 
 //prefix increment takes no arguments:
     Matrix &Matrix::operator++() {
@@ -124,7 +141,7 @@ namespace zich {
     }
 
 //postfix increment:
-    Matrix Matrix::operator++(int dummy_flag_for_postfix_increment) {
+    Matrix Matrix::operator++(int) {
         Matrix matCopy(this->mat, this->row, this->col);
         for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
             this->mat[i]++;
@@ -132,7 +149,7 @@ namespace zich {
         return matCopy;
     }
 
-    Matrix Matrix::operator--(int dummy_flag_for_postfix_increment) {
+    Matrix Matrix::operator--(int) {
         Matrix matCopy(this->mat, this->row, this->col);
         for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
             this->mat[i]--;

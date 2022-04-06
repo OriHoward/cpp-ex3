@@ -130,6 +130,9 @@ TEST_CASE ("good output") {
     std::vector<double> vecOfZeros{0, 0, 0, 0, 0, 0, 0, 0, 0};
     std::vector<double> doubleNegativeVec{-2, -4, -6, -8, -10, -12, -14, -16, -18};
     std::vector<double> doublePositiveVec{2, 4, 6, 8, 10, 12, 14, 16, 18};
+    std::vector<double> sumAVecTest{10, 20, 5, 5, 1, 1}; // 42
+    std::vector<double> sumBVecTest{20, 20, 0, 2, 0, 0}; // 42
+
 
     /**
      * init all matrices
@@ -140,35 +143,61 @@ TEST_CASE ("good output") {
     Matrix regularMat(vec, 5, 3);
     Matrix doubleNegativeMat(doubleNegativeVec, 3, 3);
     Matrix doublePositiveMat(doublePositiveVec, 3, 3);
+    Matrix sumAMat(sumAVecTest, 2, 3);
+    Matrix sumBMat(sumBVecTest, 2, 3);
 
     std::stringstream ss;
 
     /**
-     * Test the operators : +, += , - ,-= in sub cases.
+     * Test the operators : + , += , - , -=
      */
-            SUBCASE("+operator") {
+            SUBCASE("operator -> +") {
                 CHECK_EQ(positiveMat + negativeMat, matOfZeros);
                 CHECK_EQ(negativeMat + positiveMat, matOfZeros);
     }
 
-            SUBCASE ("+=operator") {
+            SUBCASE ("operator -> +=") {
         positiveMat += negativeMat;
                 CHECK_EQ(positiveMat, matOfZeros);
         negativeMat += matOfZeros;
                 CHECK_EQ(negativeMat, negativeMat);
     }
 
-            SUBCASE("-operator") {
+            SUBCASE("operator -> -") {
                 CHECK_EQ(negativeMat - positiveMat, doubleNegativeMat);
                 CHECK_EQ(positiveMat - positiveMat, matOfZeros);
     }
-            SUBCASE("-=operator") {
+            SUBCASE("operator -> -=") {
         negativeMat -= negativeMat;
                 CHECK_EQ(negativeMat, matOfZeros);
         positiveMat -= -(positiveMat);
                 CHECK_EQ(positiveMat, doublePositiveMat);
 
     }
+
+    /**
+     * Test the compare operators : ==, != , < , <= , > , >=
+     */
+
+//            SUBCASE("operator -> ==") {
+//
+//    }
+//            SUBCASE("operator -> !=") {
+//
+//    }
+//            SUBCASE("operator -> <=") {
+//
+//    }
+//            SUBCASE("operator -> <") {
+//
+//    }
+//            SUBCASE("operator -> >") {
+//
+//    }
+//            SUBCASE("operator -> >=") {
+//
+//    }
+
 
     /**
      * Test the string output
@@ -188,9 +217,51 @@ TEST_CASE ("good output") {
                 CHECK(ss.str() == "[0 0 0]\n[0 0 0]\n[0 0 0]");
 
     }
-}
 
-//TEST_CASE ("bad output") {
+    /**
+     * Test prefix increment and postfix increment
+     */
+
+            SUBCASE("prefix test") {
+        Matrix expected(std::vector<double>{1, 1, 1, 1, 1, 1, 1, 1, 1}, 3, 3);
+                CHECK_EQ(++matOfZeros, expected);
+        Matrix expectedRegular(std::vector<double>{3, 5.3, 6.0, 3, 4, 2.7, 5.1, 3.5, 1, 20, 5, 5, 5, 5, 5}, 5, 3);
+                CHECK_EQ(++regularMat, expectedRegular);
+    }
+            SUBCASE("postfix test") {
+                CHECK(matOfZeros-- != matOfZeros);
+
+    }
+
+    /**
+   * Test the compare operators : *, *= (matrices and scalar as well)
+   */
+            SUBCASE("operator -> scalar * Matrix") {
+                CHECK_EQ(-2 * negativeMat, doublePositiveMat);
+                CHECK_EQ(2 * negativeMat, doubleNegativeMat);
+                CHECK_EQ(5 * matOfZeros, matOfZeros);
+                CHECK_EQ(0 * negativeMat, matOfZeros);
+    }
+            SUBCASE("operator -> Matrix *= scalar") {
+                CHECK_EQ(-2 * negativeMat, doublePositiveMat);
+                CHECK_EQ(2 * negativeMat, doubleNegativeMat);
+                CHECK_EQ(5 * matOfZeros, matOfZeros);
+                CHECK_EQ(0 * negativeMat, matOfZeros);
+    }
+//            SUBCASE("operator -> Matrix * Matrix") {
+//        std::vector<double> randomVec{2, 2, 2, 2, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10}
+//        Matrix toMultiMat(randomVec, 3, 5);
+//        std::vector<double> expectedVec{4, 8.6, 10.0, 4, 30, 10.7, 40.1, 20.5, 0, 190, 40, 40, 40, 40, 40}
+//        Matrix expected(expectedVec,3,5)
+//                CHECK_EQ(toMultiMat * regularMat, doublePositiveMat);
+//                CHECK_EQ(2 * negativeMat, doubleNegativeMat);
+//                CHECK_EQ(5 * matOfZeros, matOfZeros);
+//                CHECK_EQ(0 * negativeMat, matOfZeros);
+//    }
+
+//            SUBCASE("operator -> Matrix *= Matrix") {
 //
-//}
+//    }
+
+}
 

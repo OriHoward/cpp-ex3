@@ -41,7 +41,7 @@ namespace zich {
 
         Matrix &operator*=(const Matrix &other);
 
-        Matrix &operator*=(const double scalar);
+        Matrix &operator*=( double scalar);
 
         //prefix increment takes no arguments:
         Matrix &operator++();
