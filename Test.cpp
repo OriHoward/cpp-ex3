@@ -44,8 +44,8 @@ TEST_CASE ("bad input - can't add or subtract or compare two matrices with diffe
     for (int i = 1; i <= NUM_OF_LOOPS; ++i) {
         // checking if the division is an integer
         if (VEC_SIZE / i == VEC_SIZE / double(i)) {
-            Matrix firstMat(vec, i, VEC_SIZE / i);
-            Matrix secondMat(vec, VEC_SIZE / i, i);
+            Matrix firstMat{vec, i, VEC_SIZE / i};
+            Matrix secondMat{vec, VEC_SIZE / i, i};
                     CHECK_THROWS(firstMat + secondMat);
                     CHECK_THROWS(firstMat += secondMat);
                     CHECK_THROWS(firstMat - secondMat);
@@ -83,13 +83,13 @@ TEST_CASE ("bad input - Undefined multiplication between 2 matrices") {
 TEST_CASE ("good input - well defined multiplication between 2 matrices") {
     std::vector<double> vec(VEC_SIZE);
     generateRandomVector(vec);
-    for (int i = 1; i <= NUM_OF_LOOPS; ++i) {
+    for (int i = 4; i <= NUM_OF_LOOPS; ++i) {
         // checking if the division is an integer
         if (VEC_SIZE / i == VEC_SIZE / double(i)) {
-            Matrix firstMat(vec, i, VEC_SIZE / i);
-            Matrix secondMat(vec, VEC_SIZE / i, i);
+            Matrix firstMat{vec, i, VEC_SIZE / i};
+            Matrix secondMat{vec, VEC_SIZE / i, i};
                     CHECK_NOTHROW(firstMat * secondMat);
-                    CHECK_NOTHROW(secondMat * firstMat);
+//                    CHECK_NOTHROW(secondMat * firstMat);
         }
     }
 }
@@ -132,19 +132,24 @@ TEST_CASE ("good output") {
     std::vector<double> doublePositiveVec{2, 4, 6, 8, 10, 12, 14, 16, 18};
     std::vector<double> sumAVecTest{10, 20, 5, 5, 1, 1}; // 42
     std::vector<double> sumBVecTest{20, 20, 0, 2, 0, 0}; // 42
+    std::vector<double> multiATest{12, 14, 2, -7, 15, 1, 0, 4, 6, 2, 4, 5, 5, 2, 90}; // 3X5
+    std::vector<double> multiBTest{44, -2, 3, 4, 6, 8, 9, 0, 25, 3}; //5X2
+
 
 
     /**
      * init all matrices
      */
-    Matrix positiveMat(positiveVec, 3, 3);
-    Matrix negativeMat(negativeVec, 3, 3);
-    Matrix matOfZeros(vecOfZeros, 3, 3);
-    Matrix regularMat(vec, 5, 3);
-    Matrix doubleNegativeMat(doubleNegativeVec, 3, 3);
-    Matrix doublePositiveMat(doublePositiveVec, 3, 3);
-    Matrix sumAMat(sumAVecTest, 2, 3);
-    Matrix sumBMat(sumBVecTest, 2, 3);
+    Matrix positiveMat{positiveVec, 3, 3};
+    Matrix negativeMat{negativeVec, 3, 3};
+    Matrix matOfZeros{vecOfZeros, 3, 3};
+    Matrix regularMat{vec, 5, 3};
+    Matrix doubleNegativeMat{doubleNegativeVec, 3, 3};
+    Matrix doublePositiveMat{doublePositiveVec, 3, 3};
+    Matrix sumAMat{sumAVecTest, 2, 3};
+    Matrix sumBMat{sumBVecTest, 2, 3};
+    Matrix multiAMat{multiATest, 3, 5};
+    Matrix multiBMat{multiBTest, 5, 2};
 
     std::stringstream ss;
 
@@ -179,12 +184,14 @@ TEST_CASE ("good output") {
      * Test the compare operators : ==, != , < , <= , > , >=
      */
 
-//            SUBCASE("operator -> ==") {
-//
-//    }
-//            SUBCASE("operator -> !=") {
-//
-//    }
+            SUBCASE("operator -> ==") {
+                CHECK(bool (positiveMat +negativeMat == matOfZeros));
+
+    }
+            SUBCASE("operator -> !=") {
+                CHECK(bool (sumAMat != sumBMat));
+
+    }
 //            SUBCASE("operator -> <=") {
 //
 //    }
@@ -248,16 +255,11 @@ TEST_CASE ("good output") {
                 CHECK_EQ(5 * matOfZeros, matOfZeros);
                 CHECK_EQ(0 * negativeMat, matOfZeros);
     }
-//            SUBCASE("operator -> Matrix * Matrix") {
-//        std::vector<double> randomVec{2, 2, 2, 2, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10}
-//        Matrix toMultiMat(randomVec, 3, 5);
-//        std::vector<double> expectedVec{4, 8.6, 10.0, 4, 30, 10.7, 40.1, 20.5, 0, 190, 40, 40, 40, 40, 40}
-//        Matrix expected(expectedVec,3,5)
-//                CHECK_EQ(toMultiMat * regularMat, doublePositiveMat);
-//                CHECK_EQ(2 * negativeMat, doubleNegativeMat);
-//                CHECK_EQ(5 * matOfZeros, matOfZeros);
-//                CHECK_EQ(0 * negativeMat, matOfZeros);
-//    }
+            SUBCASE("operator -> Matrix * Matrix") {
+        std::vector<double> expectedVec{894, 93, 172, 36, 2489, 322};
+        Matrix expectedMat{expectedVec, 3, 2};
+                CHECK_EQ(multiAMat * multiBMat, expectedMat);
+    }
 
 //            SUBCASE("operator -> Matrix *= Matrix") {
 //

@@ -9,8 +9,7 @@
 //todo change size type to unsign int
 //todo add deep copy to cpp and test
 //todo test postfix and prefix and * and *=
-//todo function for compare
-//todo change to {}
+//todo change to {} - check about it with adi
 
 
 namespace zich {
@@ -37,10 +36,28 @@ namespace zich {
         }
     }
 
+    double Matrix::calculateSumOfMat(const Matrix &m) {
+        double sum = 0;
+        for (unsigned int i = 0; i < m.mat.size(); ++i) {
+            sum += m.mat[i];
+        }
+        return sum;
+    }
+
+    bool Matrix::isEqual(const Matrix &m1, const Matrix &m2) const {
+        for (unsigned int i = 0; i < this->mat.size(); ++i) {
+            if (m1.mat[i] != m2.mat[i]) {
+                return false;
+            }
+        }
+        return true;
+
+    }
+
 
     Matrix Matrix::operator-() const {
-        Matrix minusMat(this->mat, this->row, this->col);
-        for (std::string::size_type i = 0; i < minusMat.mat.size(); ++i) {
+        Matrix minusMat{this->mat, this->row, this->col};
+        for (unsigned int i = 0; i < minusMat.mat.size(); ++i) {
             if (minusMat.mat[i] != 0) {
                 minusMat.mat[i] *= -1;
             }
@@ -49,18 +66,18 @@ namespace zich {
     }
 
     Matrix Matrix::operator+() const {
-        Matrix plusMat(this->mat, this->row, this->col);
-        for (std::string::size_type i = 0; i < plusMat.mat.size(); ++i) {
-            plusMat.mat[i] *= -1;
-        }
+        Matrix plusMat{this->mat, this->row, this->col};
+//        for (unsigned int i = 0; i < plusMat.mat.size(); ++i) {
+//            plusMat.mat[i] *= -1;
+//        }
         return plusMat;
     }
 
 
     Matrix Matrix::operator+(const Matrix &other) const {
         this->checkSameDimension(other);
-        Matrix newMat(this->mat, this->row, this->col);
-        for (std::string::size_type i = 0; i < newMat.mat.size(); ++i) {
+        Matrix newMat{this->mat, this->row, this->col};
+        for (unsigned int i = 0; i < newMat.mat.size(); ++i) {
             newMat.mat[i] += other.mat[i];
         }
         return newMat;
@@ -68,7 +85,7 @@ namespace zich {
 
     Matrix &Matrix::operator+=(const Matrix &other) {
         this->checkSameDimension(other);
-        for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
+        for (unsigned int i = 0; i < this->mat.size(); ++i) {
             this->mat[i] += other.mat[i];
         }
         return *this;
@@ -76,8 +93,8 @@ namespace zich {
 
     Matrix Matrix::operator-(const Matrix &other) const {
         this->checkSameDimension(other);
-        Matrix newMat(this->mat, this->row, this->col);
-        for (std::string::size_type i = 0; i < newMat.mat.size(); ++i) {
+        Matrix newMat{this->mat, this->row, this->col};
+        for (unsigned int i = 0; i < newMat.mat.size(); ++i) {
             newMat.mat[i] -= other.mat[i];
         }
         return newMat;
@@ -85,7 +102,7 @@ namespace zich {
 
     Matrix &Matrix::operator-=(const Matrix &other) {
         this->checkSameDimension(other);
-        for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
+        for (unsigned int i = 0; i < this->mat.size(); ++i) {
             this->mat[i] -= other.mat[i];
         }
         return *this;
@@ -93,33 +110,19 @@ namespace zich {
 
     Matrix Matrix::operator*(const Matrix &other) const {
         this->isMultiDefined(other);
-        std::vector<double> newVec;
-        newVec.reserve(static_cast <unsigned int>(this->row * other.col));
-        Matrix newMat(newVec, this->row, other.col);
-        unsigned int matIndex = 0;
-        unsigned int rowCount = 0;
-        unsigned int jump = static_cast <unsigned int>(other.col);
-        double currSum = 0;
-        for (unsigned int currRow = 0; currRow < other.col; ++currRow) {
-            for (unsigned int j = 0; j < this->mat.size(); ++j) {
-                currSum += this->mat[j] * other.mat[currRow + (rowCount++ * jump)];
-                if (rowCount == other.row - 1) {
-                    newMat.mat[matIndex] = currSum;
-                    currSum = 0;
-                    rowCount = 0;
-                }
-            }
-        }
+        unsigned int newSize = static_cast <unsigned int>(this->row * other.col);
+        std::vector<double> newVec(newSize, 0);
+        Matrix newMat{newVec, this->row, other.col};
         return newMat;
     }
 
-    Matrix &Matrix::operator*=(const Matrix &other) {
+    Matrix &Matrix::operator*=(const Matrix &other) { /// umm..
         this->isMultiDefined(other);
         return *this;
     }
 
     Matrix &Matrix::operator*=(const double scalar) {
-        for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
+        for (unsigned int i = 0; i < this->mat.size(); ++i) {
             this->mat[i] *= scalar;
         }
         return *this;
@@ -127,14 +130,14 @@ namespace zich {
 
 //prefix increment takes no arguments:
     Matrix &Matrix::operator++() {
-        for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
+        for (unsigned int i = 0; i < this->mat.size(); ++i) {
             this->mat[i]++;
         }
         return *this;
     }
 
     Matrix &Matrix::operator--() {
-        for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
+        for (unsigned int i = 0; i < this->mat.size(); ++i) {
             this->mat[i]--;
         }
         return *this;
@@ -142,16 +145,16 @@ namespace zich {
 
 //postfix increment:
     Matrix Matrix::operator++(int) {
-        Matrix matCopy(this->mat, this->row, this->col);
-        for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
+        Matrix matCopy{this->mat, this->row, this->col};
+        for (unsigned int i = 0; i < this->mat.size(); ++i) {
             this->mat[i]++;
         }
         return matCopy;
     }
 
     Matrix Matrix::operator--(int) {
-        Matrix matCopy(this->mat, this->row, this->col);
-        for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
+        Matrix matCopy{this->mat, this->row, this->col};
+        for (unsigned int i = 0; i < this->mat.size(); ++i) {
             this->mat[i]--;
         }
         return matCopy;
@@ -159,71 +162,77 @@ namespace zich {
 
     bool Matrix::operator!=(const Matrix &other) const {
         this->checkSameDimension(other);
-        for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
-            if (this->mat[i] != other.mat[i]) {
-                return true;
-            }
-        }
-        return false;
+        return !this->isEqual(*this, other);
+//        for (unsigned int i = 0; i < this->mat.size(); ++i) {
+//            if (this->mat[i] != other.mat[i]) {
+//                return true;
+//            }
+//        }
+//        return false;
     }
 
     bool Matrix::operator==(const Matrix &other) const {
         this->checkSameDimension(other);
-        for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
-            if (this->mat[i] != other.mat[i]) {
-                return false;
-            }
-        }
-        return true;
+        return this->isEqual(*this, other);
+//        for (unsigned int i = 0; i < this->mat.size(); ++i) {
+//            if (this->mat[i] != other.mat[i]) {
+//                return false;
+//            }
+//        }
+//        return true;
     }
 
     bool Matrix::operator>(const Matrix &other) const {
         this->checkSameDimension(other);
-        double sumOfA = 0;
-        double sumOfB = 0;
-        for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
-            sumOfA += this->mat[i];
-            sumOfB += other.mat[i];
-        }
-        return sumOfA > sumOfB;
+        return this->calculateSumOfMat(*this) > this->calculateSumOfMat(other);
+//        double sumOfA = 0;
+//        double sumOfB = 0;
+//        for (unsigned int i = 0; i < this->mat.size(); ++i) {
+//            sumOfA += this->mat[i];
+//            sumOfB += other.mat[i];
+//        }
+//        return sumOfA > sumOfB;
     }
 
     bool Matrix::operator>=(const Matrix &other) const {
         this->checkSameDimension(other);
-        double sumOfA = 0;
-        double sumOfB = 0;
-        for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
-            sumOfA += this->mat[i];
-            sumOfB += other.mat[i];
-        }
-        return sumOfA >= sumOfB;
+        return this->calculateSumOfMat(*this) >= this->calculateSumOfMat(other);
+//        double sumOfA = 0;
+//        double sumOfB = 0;
+//        for (unsigned int i = 0; i < this->mat.size(); ++i) {
+//            sumOfA += this->mat[i];
+//            sumOfB += other.mat[i];
+//        }
+//        return sumOfA >= sumOfB;
     }
 
     bool Matrix::operator<(const Matrix &other) const {
         this->checkSameDimension(other);
-        double sumOfA = 0;
-        double sumOfB = 0;
-        for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
-            sumOfA += this->mat[i];
-            sumOfB += other.mat[i];
-        }
-        return sumOfA < sumOfB;
+        return this->calculateSumOfMat(*this) < this->calculateSumOfMat(other);
+//        double sumOfA = 0;
+//        double sumOfB = 0;
+//        for (unsigned int i = 0; i < this->mat.size(); ++i) {
+//            sumOfA += this->mat[i];
+//            sumOfB += other.mat[i];
+//        }
+//        return sumOfA < sumOfB;
     }
 
     bool Matrix::operator<=(const Matrix &other) const {
         this->checkSameDimension(other);
-        double sumOfA = 0;
-        double sumOfB = 0;
-        for (std::string::size_type i = 0; i < this->mat.size(); ++i) {
-            sumOfA += this->mat[i];
-            sumOfB += other.mat[i];
-        }
-        return sumOfA <= sumOfB;
+        return this->calculateSumOfMat(*this) <= this->calculateSumOfMat(other);
+//        double sumOfA = 0;
+//        double sumOfB = 0;
+//        for (unsigned int i = 0; i < this->mat.size(); ++i) {
+//            sumOfA += this->mat[i];
+//            sumOfB += other.mat[i];
+//        }
+//        return sumOfA <= sumOfB;
     }
 
     Matrix operator*(const double scalar, const Matrix &m) {
-        Matrix newMat(m.mat, m.row, m.col);
-        for (std::string::size_type i = 0; i < newMat.mat.size(); ++i) {
+        Matrix newMat{m.mat, m.row, m.col};
+        for (unsigned int i = 0; i < newMat.mat.size(); ++i) {
             newMat.mat[i] *= scalar;
         }
         return newMat;
@@ -232,7 +241,7 @@ namespace zich {
 
     std::ostream &operator<<(std::ostream &output, const Matrix &m) {
         int currCol = 1;
-        std::string::size_type index = 0;
+        unsigned int index = 0;
         while (index < m.mat.size()) {
             output << "[" << m.mat[index++];
             while (currCol < m.col) {

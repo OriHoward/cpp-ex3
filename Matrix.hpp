@@ -20,6 +20,10 @@ namespace zich {
 
         void isMultiDefined(const Matrix &other) const;
 
+        static double calculateSumOfMat(const Matrix &m);
+
+        bool isEqual(const Matrix &m1, const Matrix &m2) const;
+
         //Unary minus
         Matrix operator-() const;
 
@@ -41,7 +45,7 @@ namespace zich {
 
         Matrix &operator*=(const Matrix &other);
 
-        Matrix &operator*=( double scalar);
+        Matrix &operator*=(double scalar);
 
         //prefix increment takes no arguments:
         Matrix &operator++();
