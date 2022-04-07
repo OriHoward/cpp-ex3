@@ -6,10 +6,7 @@
 #include <iomanip>
 #include <math.h>
 
-//todo change size type to unsign int
 //todo add deep copy to cpp and test
-//todo test postfix and prefix and * and *=
-//todo change to {} - check about it with adi
 
 
 namespace zich {
@@ -51,7 +48,6 @@ namespace zich {
             }
         }
         return true;
-
     }
 
 
@@ -67,9 +63,6 @@ namespace zich {
 
     Matrix Matrix::operator+() const {
         Matrix plusMat{this->mat, this->row, this->col};
-//        for (unsigned int i = 0; i < plusMat.mat.size(); ++i) {
-//            plusMat.mat[i] *= -1;
-//        }
         return plusMat;
     }
 
@@ -85,9 +78,7 @@ namespace zich {
 
     Matrix &Matrix::operator+=(const Matrix &other) {
         this->checkSameDimension(other);
-        for (unsigned int i = 0; i < this->mat.size(); ++i) {
-            this->mat[i] += other.mat[i];
-        }
+        *this = *this + other;
         return *this;
     }
 
@@ -102,20 +93,18 @@ namespace zich {
 
     Matrix &Matrix::operator-=(const Matrix &other) {
         this->checkSameDimension(other);
-        for (unsigned int i = 0; i < this->mat.size(); ++i) {
-            this->mat[i] -= other.mat[i];
-        }
+        *this = *this - other;
         return *this;
     }
 
     Matrix Matrix::operator*(const Matrix &other) const {
         this->isMultiDefined(other);
-        unsigned int currRunner = 0;
-        unsigned int matIndex = 0;
-        double currSum = 0;
-        unsigned int colRunner = 0;
-        unsigned int jump = static_cast<unsigned int>(other.col);
-        unsigned int newSize = static_cast <unsigned int>(this->row * other.col);
+        unsigned int currRunner = 0; // The index which always moves accordingly between the 2 matrices
+        unsigned int matIndex = 0; // the index for inserting the result to the newMat
+        double currSum = 0; // The current sum which is calculated every iteration
+        unsigned int colRunner = 0; // index runner for the cols in other.mat
+        unsigned int jump = static_cast<unsigned int>(other.col); // the step we need to skip to get to the next row.
+        unsigned int newSize = static_cast <unsigned int>(this->row * other.col); // the new size of the mat
         std::vector<double> newVec(newSize, 0);
         Matrix newMat{newVec, this->row, other.col};
         for (unsigned int i = 0; i < this->mat.size(); i += static_cast<unsigned int>(this->col)) {
@@ -134,8 +123,9 @@ namespace zich {
         return newMat;
     }
 
-    Matrix &Matrix::operator*=(const Matrix &other) { /// umm..
+    Matrix &Matrix::operator*=(const Matrix &other) {
         this->isMultiDefined(other);
+        *this = *this * other;
         return *this;
     }
 
@@ -164,88 +154,44 @@ namespace zich {
 //postfix increment:
     Matrix Matrix::operator++(int) {
         Matrix matCopy{this->mat, this->row, this->col};
-        for (unsigned int i = 0; i < this->mat.size(); ++i) {
-            this->mat[i]++;
-        }
+        ++*this;
         return matCopy;
     }
 
     Matrix Matrix::operator--(int) {
         Matrix matCopy{this->mat, this->row, this->col};
-        for (unsigned int i = 0; i < this->mat.size(); ++i) {
-            this->mat[i]--;
-        }
+        --*this;
         return matCopy;
     }
 
     bool Matrix::operator!=(const Matrix &other) const {
         this->checkSameDimension(other);
         return !this->isEqual(*this, other);
-//        for (unsigned int i = 0; i < this->mat.size(); ++i) {
-//            if (this->mat[i] != other.mat[i]) {
-//                return true;
-//            }
-//        }
-//        return false;
     }
 
     bool Matrix::operator==(const Matrix &other) const {
         this->checkSameDimension(other);
         return this->isEqual(*this, other);
-//        for (unsigned int i = 0; i < this->mat.size(); ++i) {
-//            if (this->mat[i] != other.mat[i]) {
-//                return false;
-//            }
-//        }
-//        return true;
     }
 
     bool Matrix::operator>(const Matrix &other) const {
         this->checkSameDimension(other);
         return this->calculateSumOfMat(*this) > this->calculateSumOfMat(other);
-//        double sumOfA = 0;
-//        double sumOfB = 0;
-//        for (unsigned int i = 0; i < this->mat.size(); ++i) {
-//            sumOfA += this->mat[i];
-//            sumOfB += other.mat[i];
-//        }
-//        return sumOfA > sumOfB;
     }
 
     bool Matrix::operator>=(const Matrix &other) const {
         this->checkSameDimension(other);
         return this->calculateSumOfMat(*this) >= this->calculateSumOfMat(other);
-//        double sumOfA = 0;
-//        double sumOfB = 0;
-//        for (unsigned int i = 0; i < this->mat.size(); ++i) {
-//            sumOfA += this->mat[i];
-//            sumOfB += other.mat[i];
-//        }
-//        return sumOfA >= sumOfB;
     }
 
     bool Matrix::operator<(const Matrix &other) const {
         this->checkSameDimension(other);
         return this->calculateSumOfMat(*this) < this->calculateSumOfMat(other);
-//        double sumOfA = 0;
-//        double sumOfB = 0;
-//        for (unsigned int i = 0; i < this->mat.size(); ++i) {
-//            sumOfA += this->mat[i];
-//            sumOfB += other.mat[i];
-//        }
-//        return sumOfA < sumOfB;
     }
 
     bool Matrix::operator<=(const Matrix &other) const {
         this->checkSameDimension(other);
         return this->calculateSumOfMat(*this) <= this->calculateSumOfMat(other);
-//        double sumOfA = 0;
-//        double sumOfB = 0;
-//        for (unsigned int i = 0; i < this->mat.size(); ++i) {
-//            sumOfA += this->mat[i];
-//            sumOfB += other.mat[i];
-//        }
-//        return sumOfA <= sumOfB;
     }
 
     Matrix operator*(const double scalar, const Matrix &m) {

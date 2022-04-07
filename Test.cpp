@@ -33,7 +33,7 @@ TEST_CASE ("bad input - row*col NOT equal to size of vector") {
         row = 1 + std::rand() % 30;
         col = 1 + std::rand() % 30;
         if (row * col != vec.size()) {
-                    CHECK_THROWS(Matrix(vec, row, col));
+                    CHECK_THROWS(Matrix({vec, row, col}));
         }
     }
 }
@@ -67,17 +67,17 @@ TEST_CASE ("bad input - can't add or subtract or compare two matrices with diffe
 TEST_CASE ("bad input - Undefined multiplication between 2 matrices") {
     std::vector<double> vec(VEC_SIZE);
     generateRandomVector(vec);
-            CHECK_THROWS(Matrix(vec, 10, 30) * Matrix(vec, 20, 15));
-            CHECK_THROWS(Matrix(vec, 10, 30) *= Matrix(vec, 20, 15));
+            CHECK_THROWS(Matrix({vec, 10, 30}) * Matrix({vec, 20, 15}));
+            CHECK_THROWS(Matrix({vec, 10, 30}) *= Matrix({vec, 20, 15}));
 
-            CHECK_THROWS(Matrix(vec, 2, 150) * Matrix(vec, 30, 10));
-            CHECK_THROWS(Matrix(vec, 150, 2) *= Matrix(vec, 20, 15));
+            CHECK_THROWS(Matrix({vec, 2, 150}) * Matrix({vec, 30, 10}));
+            CHECK_THROWS(Matrix({vec, 150, 2}) *= Matrix({vec, 20, 15}));
 
-            CHECK_THROWS(Matrix(vec, 10, 30) * Matrix(vec, 4, 75));
-            CHECK_THROWS(Matrix(vec, 2, 150) *= Matrix(vec, 75, 4));
+            CHECK_THROWS(Matrix({vec, 10, 30}) * Matrix({vec, 4, 75}));
+            CHECK_THROWS(Matrix({vec, 2, 150}) *= Matrix({vec, 75, 4}));
 
-            CHECK_THROWS(Matrix(vec, 20, 15) * Matrix(vec, 20, 15));
-            CHECK_THROWS(Matrix(vec, 10, 30) *= Matrix(vec, 10, 30));
+            CHECK_THROWS(Matrix({vec, 20, 15}) * Matrix({vec, 20, 15}));
+            CHECK_THROWS(Matrix({vec, 10, 30}) *= Matrix({vec, 10, 30}));
 }
 
 TEST_CASE ("good input - well defined multiplication between 2 matrices") {
@@ -96,26 +96,26 @@ TEST_CASE ("good input - well defined multiplication between 2 matrices") {
 TEST_CASE ("bad input - row and col must be positive") {
     std::vector<double> vec(VEC_SIZE);
     generateRandomVector(vec);
-            CHECK_THROWS(Matrix(vec, -10, -30));
-            CHECK_THROWS(Matrix(vec, -30, -10));
+            CHECK_THROWS(Matrix({vec, -10, -30}));
+            CHECK_THROWS(Matrix({vec, -30, -10}));
 
-            CHECK_THROWS(Matrix(vec, -150, -2));
-            CHECK_THROWS(Matrix(vec, -2, -150));
+            CHECK_THROWS(Matrix({vec, -150, -2}));
+            CHECK_THROWS(Matrix({vec, -2, -150}));
 
-            CHECK_THROWS(Matrix(vec, -4, -75));
-            CHECK_THROWS(Matrix(vec, -75, -4));
+            CHECK_THROWS(Matrix({vec, -4, -75}));
+            CHECK_THROWS(Matrix({vec, -75, -4}));
 
-            CHECK_THROWS(Matrix(vec, -6, -50));
-            CHECK_THROWS(Matrix(vec, -50, -6));
+            CHECK_THROWS(Matrix({vec, -6, -50}));
+            CHECK_THROWS(Matrix({vec, -50, -6}));
 
 }
 
 TEST_CASE ("bad input - row and cols can't be zero") {
     std::vector<double> vec(10);
     generateRandomVector(vec);
-            CHECK_THROWS(Matrix(vec, 10, 0));
-            CHECK_THROWS(Matrix(vec, 0, 10));
-            CHECK_THROWS(Matrix(vec, 0, 0));
+            CHECK_THROWS(Matrix({vec, 10, 0}));
+            CHECK_THROWS(Matrix({vec, 0, 10}));
+            CHECK_THROWS(Matrix({vec, 0, 0}));
 }
 
 TEST_CASE ("good output") {
@@ -129,7 +129,7 @@ TEST_CASE ("good output") {
     std::vector<double> vecOfZeros{0, 0, 0, 0, 0, 0, 0, 0, 0};
     std::vector<double> doubleNegativeVec{-2, -4, -6, -8, -10, -12, -14, -16, -18};
     std::vector<double> doublePositiveVec{2, 4, 6, 8, 10, 12, 14, 16, 18};
-    std::vector<double> sumAVecTest{10, 20, 5, 5, 1, 1}; // 42
+    std::vector<double> sumAVecTest{20, 20, 5, 5, 1, 1}; // 52
     std::vector<double> sumBVecTest{20, 20, 0, 2, 0, 0}; // 42
 
     /**
@@ -147,8 +147,8 @@ TEST_CASE ("good output") {
 
 
     std::vector<double> multiETest{2, 4, -5, 12, 4, 14, 0}; //1X7
-    std::vector<double> multiFTest{0, 9, 6, 4, 7, 0, 9, 5, 8, 9,-4,-3,-2,-4}; //7X2
-    std::vector<double> expectedVec3{73,88}; //2X2
+    std::vector<double> multiFTest{0, 9, 6, 4, 7, 0, 9, 5, 8, 9, -4, -3, -2, -4}; //7X2
+    std::vector<double> expectedVec3{73, 88}; //2X2
 
 
 
@@ -208,7 +208,6 @@ TEST_CASE ("good output") {
                 CHECK_EQ(negativeMat, matOfZeros);
         positiveMat -= -(positiveMat);
                 CHECK_EQ(positiveMat, doublePositiveMat);
-
     }
 
     /**
@@ -221,20 +220,19 @@ TEST_CASE ("good output") {
     }
             SUBCASE("operator -> !=") {
                 CHECK(bool (sumAMat != sumBMat));
-
     }
-//            SUBCASE("operator -> <=") {
-//
-//    }
-//            SUBCASE("operator -> <") {
-//
-//    }
-//            SUBCASE("operator -> >") {
-//
-//    }
-//            SUBCASE("operator -> >=") {
-//
-//    }
+            SUBCASE("operator -> <=") {
+                CHECK(bool (sumBMat <= sumAMat));
+    }
+            SUBCASE("operator -> <") {
+                CHECK(bool (sumBMat<sumAMat));
+    }
+            SUBCASE("operator -> >") {
+                CHECK(bool (sumAMat >sumBMat));
+    }
+            SUBCASE("operator -> >=") {
+                CHECK(bool (sumAMat >=sumBMat));
+    }
 
 
     /**
@@ -291,9 +289,14 @@ TEST_CASE ("good output") {
                 CHECK_EQ(multiEMat * multiFMat, expectedMat3);
     }
 
-//            SUBCASE("operator -> Matrix *= Matrix") {
-//
-//    }
+            SUBCASE("operator -> Matrix *= Matrix") {
+        multiAMat *= multiBMat;
+        multiCMat *= multiDMat;
+        multiEMat *= multiFMat;
+                CHECK_EQ(multiAMat, expectedMat);
+                CHECK_EQ(multiCMat, expectedMat2);
+                CHECK_EQ(multiEMat, expectedMat3);
+    }
 
 
 }
