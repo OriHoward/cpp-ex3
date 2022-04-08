@@ -15,9 +15,9 @@ void generateRandomVector(std::vector<double> &randomVec) {
     }
 }
 
-int main() {
-    using namespace zich;
+using namespace zich;
 
+int main() {
     /**
      * generates and prints a random matrix
      */
@@ -69,8 +69,6 @@ int main() {
     std::cout << symmetricMat + matOfZeros << "\n\n";
     std::cout << "++Symmetric matrix\n";
     std::cout << ++symmetricMat << "\n\n";
-
-
 
     // add minus operator and cin in main
 

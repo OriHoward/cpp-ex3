@@ -2,17 +2,17 @@
 #include <iostream>
 #include <stdexcept>
 #include <vector>
-#include <iostream>
-#include <iomanip>
-#include <math.h>
 
-//todo add deep copy to cpp and test
-
+//todo documentation - all functions
+//todo - check about the main problem
+//todo - cin
 
 namespace zich {
 
     Matrix::Matrix(const std::vector<double> &vec, int row, int col)
-            : mat(vec), row(row), col(col) { checkInput(vec.size(), row, col); }
+            : mat(vec), row(row), col(col) {
+        checkInput(vec.size(), row, col);
+    }
 
 
     void Matrix::checkInput(unsigned int matSize, int row, int col) {
@@ -181,7 +181,7 @@ namespace zich {
 
     bool Matrix::operator>=(const Matrix &other) const {
         this->checkSameDimension(other);
-        return this->calculateSumOfMat(*this) >= this->calculateSumOfMat(other);
+        return this->calculateSumOfMat(*this) > this->calculateSumOfMat(other) || *this == other;
     }
 
     bool Matrix::operator<(const Matrix &other) const {
@@ -191,7 +191,7 @@ namespace zich {
 
     bool Matrix::operator<=(const Matrix &other) const {
         this->checkSameDimension(other);
-        return this->calculateSumOfMat(*this) <= this->calculateSumOfMat(other);
+        return this->calculateSumOfMat(*this) < this->calculateSumOfMat(other) || *this == other;
     }
 
     Matrix operator*(const double scalar, const Matrix &m) {
@@ -206,10 +206,15 @@ namespace zich {
     std::ostream &operator<<(std::ostream &output, const Matrix &m) {
         int currCol = 1;
         unsigned int index = 0;
+        double babi = 0;
         while (index < m.mat.size()) {
-            output << "[" << m.mat[index++];
+            babi = m.mat[index] == 0 ? 0 : m.mat[index];
+            index++;
+            output << "[" << babi;
             while (currCol < m.col) {
-                output << " " << m.mat[index++];
+                babi = m.mat[index] == 0 ? 0 : m.mat[index];
+                index++;
+                output << " " << babi;
                 currCol++;
             }
             output << "]";

@@ -1,9 +1,9 @@
+#ifndef CPP___EX3_MATRIX_HPP
+#define CPP___EX3_MATRIX_HPP
+
 #include <vector>
 #include <iostream>
 #include <stdexcept>
-
-#ifndef CPP___EX3_MATRIX_HPP
-#define CPP___EX3_MATRIX_HPP
 
 namespace zich {
     class Matrix {
@@ -14,7 +14,6 @@ namespace zich {
     public:
 
         static void checkInput(unsigned int matSize, int row, int col);
-
 
         void checkSameDimension(const Matrix &other) const;
 
@@ -78,6 +77,5 @@ namespace zich {
         friend Matrix operator*(const double, const Matrix &m);
 
     };
-
 }
 #endif
