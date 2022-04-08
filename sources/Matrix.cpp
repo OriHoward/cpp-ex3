@@ -202,7 +202,7 @@ namespace zich {
         return newMat;
     }
 
-
+    // need to handle -0
     std::ostream &operator<<(std::ostream &output, const Matrix &m) {
         int currCol = 1;
         unsigned int index = 0;
@@ -221,6 +221,41 @@ namespace zich {
         return output;
     }
 
-    std::istream &operator>>(std::istream &input, Matrix &m) { return input; }
+    std::istream &operator>>(std::istream &input, Matrix &m) {
+//        char openBrackets = '[';
+//        char closeBrackets = ']';
+//        char spaceInBetween = ' ';
+//        char nextRow = ',';
+//        int currCol = 1;
+//        unsigned int index = 0;
+//        while (index < m.mat.size()) {
+//            input >> openBrackets >> m.mat[index++];
+//            while (!(input >> closeBrackets)) {
+//                input >> m.mat[index++];
+//            }
+//            if (!(input >> nextRow)) {
+//                throw std::invalid_argument("Wrong format");
+//            }
+//        }
+
+
+
+
+//            if (!(input >> openBrackets)) {
+//                throw std::invalid_argument("Wrong format");
+//            }
+//            input >> m.mat[index++];
+//            while (currCol < m.col) {
+//                input >> spaceInBetween >> m.mat[index++];
+//                currCol++;
+//            }
+//            input >> closeBrackets;
+//            if (index < m.mat.size()) {
+//                input >> nextRow;
+//            }
+//            currCol = 1;
+//        }
+        return input;
+    }
 
 }
