@@ -16,7 +16,7 @@
 
 using namespace std;
 
-#include "Matrix.hpp"
+#include "sources/Matrix.hpp"
 
 using namespace zich;
 

@@ -15,8 +15,7 @@
 *.so
 *.dylib
 *.dll
-.idea
-cmake-build-debug
+
 # Fortran module files
 *.mod
 *.smod
@@ -33,9 +32,3 @@ cmake-build-debug
 *.app
 demo
 test
-
-# macOS
-**/.DS_Store
-
-# vscode config files
-**/.vscode
