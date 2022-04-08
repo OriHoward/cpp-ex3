@@ -1,5 +1,5 @@
 #include "doctest.h"
-#include "Matrix.hpp"
+#include "sources/Matrix.hpp"
 #include <vector>
 #include <string>
 #include <iostream>
@@ -296,6 +296,10 @@ TEST_CASE ("good output") {
                 CHECK_EQ(multiAMat, expectedMat);
                 CHECK_EQ(multiCMat, expectedMat2);
                 CHECK_EQ(multiEMat, expectedMat3);
+    }
+            SUBCASE("lala") {
+        std::cin >> matOfZeros;
+        std::cout <<matOfZeros;
     }
 
 
