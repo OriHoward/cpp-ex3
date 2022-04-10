@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <vector>
 #include <string>
+#include <regex>
 
 //todo documentation - all functions
 //todo - check about the main problem
@@ -237,7 +238,6 @@ namespace zich {
             i++;
             inputVec.push_back(std::stod(toInsert));
             toInsert = "";
-
         }
     }
 
@@ -253,14 +253,15 @@ namespace zich {
     }
 
     void Matrix::checkValidRow(const std::string &currRow) {
+//        std::regex reg("([0-9]+ ? - +)*$");
         if (currRow.at(0) != '[' || currRow.at(currRow.size() - 1) != ']') {
-            throw std::invalid_argument("Wrong format");
+            throw std::invalid_argument("Wrong format1");
         }
-        for (std::string::size_type i = 1; i < currRow.size() - 1; ++i) {
-            if (currRow.at(i) != ' ' && std::isdigit(currRow.at(i)) == 0) {
-                throw std::invalid_argument("Wrong format");
-            }
-        }
+//        std::string row = currRow.substr(1, currRow.size() - 1);
+//        if (!std::regex_search(row, reg)) {
+//            throw std::invalid_argument("Wrong format2");
+//        }
+
     }
 
     void Matrix::checkValidCol(const unsigned int expectedCol, const std::string &currRow) {
@@ -280,9 +281,13 @@ namespace zich {
         std::string delimiter = ", ";
         size_t pos = 0;
         std::string currRow;
+        bool oneRow = false;
+
+        if ((pos = userInput.find(delimiter)) == std::string::npos) {
+            oneRow = true;
+        }
 
         // reading the first row:
-        pos = userInput.find(delimiter);
         currRow = userInput.substr(0, pos);
         userInput.erase(0, pos + delimiter.length());
         Matrix::checkValidRow(currRow);
@@ -297,16 +302,17 @@ namespace zich {
             Matrix::addRow(inputVec, currRow);
             numOfRows++;
         }
-        Matrix::checkValidRow(userInput);
-        Matrix::checkValidCol(expectedCol, userInput);
-        Matrix::addRow(inputVec, userInput); // adding the last row
-        numOfRows++;
+        if (!oneRow) {
+            Matrix::checkValidRow(userInput);
+            Matrix::checkValidCol(expectedCol, userInput);
+            Matrix::addRow(inputVec, userInput); // adding the last row
+            numOfRows++;
+        }
 
         // add changes to matrix
         m.mat = inputVec;
         m.col = (int) expectedCol;
         m.row = (int) numOfRows;
-
         return input;
     }
 
