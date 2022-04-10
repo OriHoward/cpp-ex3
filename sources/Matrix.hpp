@@ -34,7 +34,7 @@ namespace zich {
         //Unary minus
         Matrix operator-() const;
 
-        Matrix operator+() const; // should we implement ?
+        Matrix operator+() const;
 
 
         Matrix(const std::vector<double> &vec, int row, int col);
@@ -82,7 +82,7 @@ namespace zich {
         friend std::istream &operator>>(std::istream &input, Matrix &m);
 
 
-        friend Matrix operator*(const double, const Matrix &m);
+        friend Matrix operator*(const double scalar, const Matrix &m);
 
     };
 }
