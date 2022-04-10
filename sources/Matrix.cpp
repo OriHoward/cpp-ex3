@@ -235,10 +235,9 @@ namespace zich {
                 toInsert += currRow.at(i++);
             }
             i++;
-            if (!toInsert.empty()) {
-                inputVec.push_back(std::stod(toInsert));
-                toInsert = "";
-            }
+            inputVec.push_back(std::stod(toInsert));
+            toInsert = "";
+
         }
     }
 
