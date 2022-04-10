@@ -227,7 +227,7 @@ namespace zich {
     }
 
 
-    void Matrix::addRow(std::vector<double> &inputVec, std::string currRow) {
+    void Matrix::addRow(std::vector<double> &inputVec, const std::string &currRow) {
         unsigned int i = 1;
         std::string toInsert;
         while (i < currRow.size() - 1) {
@@ -235,12 +235,14 @@ namespace zich {
                 toInsert += currRow.at(i++);
             }
             i++;
-            inputVec.push_back(std::stod(toInsert));
-            toInsert = "";
+            if (!toInsert.empty()) {
+                inputVec.push_back(std::stod(toInsert));
+                toInsert = "";
+            }
         }
     }
 
-    unsigned int Matrix::getCols(std::string currRow) {
+    unsigned int Matrix::getCols(const std::string &currRow) {
         unsigned int numOfCols = 0;
         for (std::string::size_type i = 1; i < currRow.size() - 1; ++i) {
             while (currRow.at(i) == ' ') {
@@ -251,18 +253,18 @@ namespace zich {
         return ++numOfCols;
     }
 
-    void Matrix::checkValidRow(std::string currRow) {
+    void Matrix::checkValidRow(const std::string &currRow) {
         if (currRow.at(0) != '[' || currRow.at(currRow.size() - 1) != ']') {
             throw std::invalid_argument("Wrong format");
         }
         for (std::string::size_type i = 1; i < currRow.size() - 1; ++i) {
-            if (currRow.at(i) != ' ' && !std::isdigit(currRow.at(i))) {
+            if (currRow.at(i) != ' ' && std::isdigit(currRow.at(i)) == 0) {
                 throw std::invalid_argument("Wrong format");
             }
         }
     }
 
-    void Matrix::checkValidCol(unsigned int expectedCol, std::string currRow) {
+    void Matrix::checkValidCol(const unsigned int expectedCol, const std::string &currRow) {
         if (expectedCol != Matrix::getCols(currRow)) {
             throw std::invalid_argument("columns must be same the size!");
         }
@@ -270,7 +272,6 @@ namespace zich {
 
     std::istream &operator>>(std::istream &input, Matrix &m) {
         std::vector<double> inputVec;
-
         std::string userInput;
         std::getline(input, userInput);
 
@@ -297,14 +298,15 @@ namespace zich {
             Matrix::addRow(inputVec, currRow);
             numOfRows++;
         }
+        Matrix::checkValidRow(userInput);
         Matrix::checkValidCol(expectedCol, userInput);
         Matrix::addRow(inputVec, userInput); // adding the last row
         numOfRows++;
 
         // add changes to matrix
         m.mat = inputVec;
-        m.col = expectedCol;
-        m.row = numOfRows;
+        m.col = (int) expectedCol;
+        m.row = (int) numOfRows;
 
         return input;
     }

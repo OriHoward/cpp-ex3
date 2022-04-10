@@ -23,13 +23,13 @@ namespace zich {
 
         bool isEqual(const Matrix &m1, const Matrix &m2) const;
 
-        static void addRow(std::vector<double> &, std::string currRow);
+        static void addRow(std::vector<double> &, const std::string &currRow);
 
-        static unsigned int getCols(std::string currRow);
+        static unsigned int getCols(const std::string &currRow);
 
-        static void checkValidRow(std::string currRow);
+        static void checkValidRow(const std::string &currRow);
 
-        static void checkValidCol(unsigned int expectedCol, std::string currRow);
+        static void checkValidCol(const unsigned int expectedCol, const std::string &currRow);
 
         //Unary minus
         Matrix operator-() const;
