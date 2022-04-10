@@ -21,7 +21,7 @@ namespace zich {
 
         static double calculateSumOfMat(const Matrix &m);
 
-        bool isEqual(const Matrix &m1, const Matrix &m2) const;
+        static bool isEqual(const Matrix &m1, const Matrix &m2);
 
         static void addRow(std::vector<double> &, const std::string &currRow);
 

@@ -35,7 +35,7 @@ namespace zich {
      * Throws otherwise
      * @param other
      */
-    void Matrix::isMultiDefined(const Matrix &other) const {
+    void Matrix::isMultiDefined(const Matrix &other) const{
         if (this->col != other.row) {
             throw std::invalid_argument("The two matrices are not multi defined");
         }
@@ -71,8 +71,8 @@ namespace zich {
      * @param m2
      * @return
      */
-    bool Matrix::isEqual(const Matrix &m1, const Matrix &m2) const {
-        for (unsigned int i = 0; i < this->mat.size(); ++i) {
+    bool Matrix::isEqual(const Matrix &m1, const Matrix &m2) {
+        for (unsigned int i = 0; i < m1.mat.size(); ++i) {
             if (m1.mat[i] != m2.mat[i]) {
                 return false;
             }
@@ -333,6 +333,7 @@ namespace zich {
         }
         return newMat;
     }
+
     /**
      * Overloads operator (ostream): Basically a ToString function for the matrix.
      * @param output
@@ -379,6 +380,7 @@ namespace zich {
             toInsert = "";
         }
     }
+
     /**
      * Returns the num of cols from the userInput
      * @param currRow
@@ -394,21 +396,17 @@ namespace zich {
         }
         return ++numOfCols;
     }
+
     /**
      * Checks if a row from the userInput is valid.
      * @param currRow
      */
     void Matrix::checkValidRow(const std::string &currRow) {
-//        std::regex reg("([0-9]+ ? - +)*$");
         if (currRow.at(0) != '[' || currRow.at(currRow.size() - 1) != ']') {
-            throw std::invalid_argument("Wrong format1");
+            throw std::invalid_argument("Wrong format");
         }
-//        std::string row = currRow.substr(1, currRow.size() - 1);
-//        if (!std::regex_search(row, reg)) {
-//            throw std::invalid_argument("Wrong format2");
-//        }
-
     }
+
     /**
      * Checks if a col from the userInput is valid.
      * @param expectedCol
@@ -419,6 +417,7 @@ namespace zich {
             throw std::invalid_argument("columns must be same the size!");
         }
     }
+
     /**
      * Overload operator (istream): Takes an input (matrix) from the user.
      * @param input
