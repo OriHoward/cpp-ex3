@@ -2,6 +2,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <vector>
+#include <string>
 
 //todo documentation - all functions
 //todo - check about the main problem
@@ -202,19 +203,18 @@ namespace zich {
         return newMat;
     }
 
-    // need to handle -0
     std::ostream &operator<<(std::ostream &output, const Matrix &m) {
         int currCol = 1;
         unsigned int index = 0;
-        double babi = 0;
+        double toPrint = 0;
         while (index < m.mat.size()) {
-            babi = m.mat[index] == 0 ? 0 : m.mat[index];
+            toPrint = m.mat[index] == 0 ? 0 : m.mat[index];
+            output << "[" << toPrint;
             index++;
-            output << "[" << babi;
             while (currCol < m.col) {
-                babi = m.mat[index] == 0 ? 0 : m.mat[index];
+                toPrint = m.mat[index] == 0 ? 0 : m.mat[index];
+                output << " " << toPrint;
                 index++;
-                output << " " << babi;
                 currCol++;
             }
             output << "]";
@@ -226,40 +226,86 @@ namespace zich {
         return output;
     }
 
+
+    void Matrix::addRow(std::vector<double> &inputVec, std::string currRow) {
+        unsigned int i = 1;
+        std::string toInsert;
+        while (i < currRow.size() - 1) {
+            while (currRow.at(i) != ' ' && currRow.at(i) != ']') {
+                toInsert += currRow.at(i++);
+            }
+            i++;
+            inputVec.push_back(std::stod(toInsert));
+            toInsert = "";
+        }
+    }
+
+    unsigned int Matrix::getCols(std::string currRow) {
+        unsigned int numOfCols = 0;
+        for (std::string::size_type i = 1; i < currRow.size() - 1; ++i) {
+            while (currRow.at(i) == ' ') {
+                numOfCols++;
+                i++;
+            }
+        }
+        return ++numOfCols;
+    }
+
+    void Matrix::checkValidRow(std::string currRow) {
+        if (currRow.at(0) != '[' || currRow.at(currRow.size() - 1) != ']') {
+            throw std::invalid_argument("Wrong format");
+        }
+        for (std::string::size_type i = 1; i < currRow.size() - 1; ++i) {
+            if (currRow.at(i) != ' ' && !std::isdigit(currRow.at(i))) {
+                throw std::invalid_argument("Wrong format");
+            }
+        }
+    }
+
+    void Matrix::checkValidCol(unsigned int expectedCol, std::string currRow) {
+        if (expectedCol != Matrix::getCols(currRow)) {
+            throw std::invalid_argument("columns must be same the size!");
+        }
+    }
+
     std::istream &operator>>(std::istream &input, Matrix &m) {
-//        char openBrackets = '[';
-//        char closeBrackets = ']';
-//        char spaceInBetween = ' ';
-//        char nextRow = ',';
-//        int currCol = 1;
-//        unsigned int index = 0;
-//        while (index < m.mat.size()) {
-//            input >> openBrackets >> m.mat[index++];
-//            while (!(input >> closeBrackets)) {
-//                input >> m.mat[index++];
-//            }
-//            if (!(input >> nextRow)) {
-//                throw std::invalid_argument("Wrong format");
-//            }
-//        }
+        std::vector<double> inputVec;
 
+        std::string userInput;
+        std::getline(input, userInput);
 
+        unsigned int expectedCol = 1;
+        unsigned int numOfRows = 1;
 
+        std::string delimiter = ", ";
+        size_t pos = 0;
+        std::string currRow;
 
-//            if (!(input >> openBrackets)) {
-//                throw std::invalid_argument("Wrong format");
-//            }
-//            input >> m.mat[index++];
-//            while (currCol < m.col) {
-//                input >> spaceInBetween >> m.mat[index++];
-//                currCol++;
-//            }
-//            input >> closeBrackets;
-//            if (index < m.mat.size()) {
-//                input >> nextRow;
-//            }
-//            currCol = 1;
-//        }
+        // reading the first row:
+        pos = userInput.find(delimiter);
+        currRow = userInput.substr(0, pos);
+        userInput.erase(0, pos + delimiter.length());
+        Matrix::checkValidRow(currRow);
+        expectedCol = Matrix::getCols(currRow);
+        Matrix::addRow(inputVec, currRow);
+
+        while ((pos = userInput.find(delimiter)) != std::string::npos) {
+            currRow = userInput.substr(0, pos);
+            userInput.erase(0, pos + delimiter.length());
+            Matrix::checkValidRow(currRow);
+            Matrix::checkValidCol(expectedCol, currRow);
+            Matrix::addRow(inputVec, currRow);
+            numOfRows++;
+        }
+        Matrix::checkValidCol(expectedCol, userInput);
+        Matrix::addRow(inputVec, userInput); // adding the last row
+        numOfRows++;
+
+        // add changes to matrix
+        m.mat = inputVec;
+        m.col = expectedCol;
+        m.row = numOfRows;
+
         return input;
     }
 
