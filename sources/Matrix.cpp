@@ -201,11 +201,21 @@ namespace zich {
         return *this;
     }
 
+
+    Matrix Matrix::operator*(const double scalar) {
+        Matrix newMat{this->mat, this->row, this->col};
+        for (unsigned int i = 0; i < newMat.mat.size(); ++i) {
+            newMat.mat[i] *= scalar;
+        }
+        return newMat;
+    }
+
+
     /**
-     * Overloads operator (*=) with scalar: Multiple the current matrix with scalar and returns the current mat with the new values.
-     * @param scalar
-     * @return
-     */
+ * Overloads operator (*=) with scalar: Multiple the current matrix with scalar and returns the current mat with the new values.
+ * @param scalar
+ * @return
+ */
     Matrix &Matrix::operator*=(const double scalar) {
         for (unsigned int i = 0; i < this->mat.size(); ++i) {
             this->mat[i] *= scalar;
@@ -359,7 +369,10 @@ namespace zich {
                 index++;
                 currCol++;
             }
-            output << "]\n";
+            output << "]";
+            if (index < m.mat.size() - 1) {
+                output << "\n";
+            }
             currCol = 1;
         }
         return output;

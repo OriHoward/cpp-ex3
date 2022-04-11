@@ -53,6 +53,8 @@ namespace zich {
 
         Matrix &operator*=(double scalar);
 
+        Matrix operator*(double scalar);
+
         //prefix increment takes no arguments:
         Matrix &operator++();
 
