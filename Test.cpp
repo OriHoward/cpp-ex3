@@ -52,7 +52,7 @@ TEST_CASE ("bad input - can't add or subtract or compare two matrices with diffe
                     CHECK_THROWS(firstMat -= secondMat);
                     CHECK_THROWS(secondMat - firstMat);
                     CHECK_THROWS(secondMat -= firstMat);
-                    CHECK_THROWS(bool check(firstMat == secondMat)); // to check which one is good
+                    CHECK_THROWS(bool check(firstMat == secondMat));
                     CHECK_THROWS(bool check(firstMat != secondMat));
                     CHECK_THROWS(bool check(firstMat > secondMat));
                     CHECK_THROWS(bool check(firstMat < secondMat));
@@ -242,7 +242,7 @@ TEST_CASE ("good output") {
             SUBCASE("Test Cout") {
         ss << regularMat;
                 CHECK_EQ(ss.str(), "[2 4.3 5]\n[2 3 1.7]\n[4.1 2.5 0]\n[19 4 4]\n[4 4 4]\n");
-        ss.str(""); // clean the string
+        ss.str("");
         ss << negativeMat;
                 CHECK(ss.str() == "[-1 -2 -3]\n[-4 -5 -6]\n[-7 -8 -9]\n");
         ss.str("");

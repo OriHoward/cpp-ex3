@@ -461,7 +461,7 @@ namespace zich {
         }
 
         // add changes to matrix
-        m.mat = inputVec;
+        m.mat.swap(inputVec);
         m.col = (int) expectedCol;
         m.row = (int) numOfRows;
         return input;
