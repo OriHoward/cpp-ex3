@@ -297,11 +297,6 @@ TEST_CASE ("good output") {
                 CHECK_EQ(multiCMat, expectedMat2);
                 CHECK_EQ(multiEMat, expectedMat3);
     }
-            SUBCASE("lala") {
-        std::cin >> matOfZeros;
-        std::cout << matOfZeros;
-    }
-
 
 }
 
