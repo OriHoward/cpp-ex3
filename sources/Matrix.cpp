@@ -473,5 +473,4 @@ namespace zich {
         m.row = (int) numOfRows;
         return input;
     }
-
 }

@@ -31,7 +31,6 @@ namespace zich {
 
         static void checkValidCol(const unsigned int expectedCol, const std::string &currRow);
 
-        //Unary minus
         Matrix operator-() const;
 
         Matrix operator+() const;
@@ -80,7 +79,6 @@ namespace zich {
         friend std::ostream &operator<<(std::ostream &output, const Matrix &m);
 
         friend std::istream &operator>>(std::istream &input, Matrix &m);
-
 
         friend Matrix operator*(const double scalar, const Matrix &m);
 

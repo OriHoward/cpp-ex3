@@ -150,10 +150,6 @@ TEST_CASE ("good output") {
     std::vector<double> multiFTest{0, 9, 6, 4, 7, 0, 9, 5, 8, 9, -4, -3, -2, -4}; //7X2
     std::vector<double> expectedVec3{73, 88}; //2X2
 
-
-
-
-
     /**
      * init all matrices
      */
