@@ -87,9 +87,7 @@ namespace zich {
     Matrix Matrix::operator-() const {
         Matrix minusMat{this->mat, this->row, this->col};
         for (unsigned int i = 0; i < minusMat.mat.size(); ++i) {
-            if (minusMat.mat[i] != 0) {
-                minusMat.mat[i] *= -1;
-            }
+            minusMat.mat[i] *= -1;
         }
         return minusMat;
     }
@@ -184,6 +182,13 @@ namespace zich {
         }
         return newMat;
     }
+    /**
+     * Matrix multi example for the explanation:
+     * ---  |||
+     * ---  |||
+     * ---  |||
+     */
+
 
     /**
      * Overloads operator (*=): Multiple other matrix with the current matrix and returns the current mat with the new values.
@@ -345,7 +350,7 @@ namespace zich {
         unsigned int index = 0;
         double toPrint = 0;
         while (index < m.mat.size()) {
-            toPrint = m.mat[index] == 0 ? 0 : m.mat[index];
+            toPrint = m.mat[index] == 0 ? 0 : m.mat[index]; // handles -0.0
             output << "[" << toPrint;
             index++;
             while (currCol < m.col) {
@@ -445,6 +450,7 @@ namespace zich {
         expectedCol = Matrix::getCols(currRow);
         Matrix::addRow(inputVec, currRow);
 
+        // looping through each of the rows - checking them and adding them to the new vector
         while ((pos = userInput.find(delimiter)) != std::string::npos) {
             currRow = userInput.substr(0, pos);
             userInput.erase(0, pos + delimiter.length());
@@ -453,6 +459,7 @@ namespace zich {
             Matrix::addRow(inputVec, currRow);
             numOfRows++;
         }
+
         if (!oneRow) {
             Matrix::checkValidRow(userInput);
             Matrix::checkValidCol(expectedCol, userInput);
