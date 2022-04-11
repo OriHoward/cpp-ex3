@@ -241,16 +241,16 @@ TEST_CASE ("good output") {
 
             SUBCASE("Test Cout") {
         ss << regularMat;
-                CHECK_EQ(ss.str(), "[2 4.3 5]\n[2 3 1.7]\n[4.1 2.5 0]\n[19 4 4]\n[4 4 4]");
+                CHECK_EQ(ss.str(), "[2 4.3 5]\n[2 3 1.7]\n[4.1 2.5 0]\n[19 4 4]\n[4 4 4]\n");
         ss.str(""); // clean the string
         ss << negativeMat;
-                CHECK(ss.str() == "[-1 -2 -3]\n[-4 -5 -6]\n[-7 -8 -9]");
+                CHECK(ss.str() == "[-1 -2 -3]\n[-4 -5 -6]\n[-7 -8 -9]\n");
         ss.str("");
         ss << matOfZeros;
-                CHECK(ss.str() == "[0 0 0]\n[0 0 0]\n[0 0 0]");
+                CHECK(ss.str() == "[0 0 0]\n[0 0 0]\n[0 0 0]\n");
         ss.str("");
         ss << -matOfZeros;
-                CHECK(ss.str() == "[0 0 0]\n[0 0 0]\n[0 0 0]");
+                CHECK(ss.str() == "[0 0 0]\n[0 0 0]\n[0 0 0]\n");
 
     }
 
@@ -299,7 +299,7 @@ TEST_CASE ("good output") {
     }
             SUBCASE("lala") {
         std::cin >> matOfZeros;
-        std::cout <<matOfZeros;
+        std::cout << matOfZeros;
     }
 
 

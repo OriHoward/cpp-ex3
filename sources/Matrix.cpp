@@ -35,7 +35,7 @@ namespace zich {
      * Throws otherwise
      * @param other
      */
-    void Matrix::isMultiDefined(const Matrix &other) const{
+    void Matrix::isMultiDefined(const Matrix &other) const {
         if (this->col != other.row) {
             throw std::invalid_argument("The two matrices are not multi defined");
         }
@@ -354,10 +354,7 @@ namespace zich {
                 index++;
                 currCol++;
             }
-            output << "]";
-            if (index < m.mat.size()) {
-                output << "\n";
-            }
+            output << "]\n";
             currCol = 1;
         }
         return output;
